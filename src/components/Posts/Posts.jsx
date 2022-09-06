@@ -11,7 +11,7 @@ const Posts = () => {
     <Flex flexWrap={'wrap'} justifyContent='space-around' alignItems={'center'} mt='6' mb='5'>
       {cards.map((card) => {
         return(
-            <Box dropShadow={'md'} w='300px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='6'>
+            <Box dropShadow={'md'} w='300px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='10'>
               <Image src={bimbs} h='250px' w='100%' borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
               <Box p='3'>
                 <Heading as='h3' size={'md'}>Post Title</Heading>

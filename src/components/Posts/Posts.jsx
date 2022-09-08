@@ -1,13 +1,33 @@
 import React from 'react'
 import {Box, Text, Heading, Button, HStack, Flex, Image} from '@chakra-ui/react'
-import bimbs from '../../assets/bimbs.jpg'
+import bimbs from '../../assets/bimbs.jpg';
+import {app} from '../../../firebaseConfig'
+import {getFirestore, collection, getDocs} from 'firebase/firestore'
 
 const Posts = () => {
   const cards = [1,2,3,4, 5,6, 7,8]
+
+  //initialize firestore
+  const db = getFirestore();
+
+  //collection reference 
+  const colref = collection(db, 'posts');
+
+  //get collection data
+  getDocs(colref).then((snapshot) => {
+      let posts = [];
+      snapshot.docs.map((doc) => {
+        return posts.push({...doc.data(), id: doc.id})
+      })
+      console.log(posts);
+  }).catch((err) => {
+    console.log(err.message);
+  });
+
+
   return (
     <>
     <Heading textAlign={'center'} as='h3' size='lg' mt={'4'}>All Posts</Heading>
-    {/* <HStack spacing={4} mt='6'> */}
     <Flex flexWrap={'wrap'} justifyContent='space-around' alignItems={'center'} mt='6' mb='5'>
       {cards.map((card) => {
         return(
@@ -24,7 +44,6 @@ const Posts = () => {
           )
       })}
     </Flex>
-    {/* </HStack> */}
   </>
   )
 }

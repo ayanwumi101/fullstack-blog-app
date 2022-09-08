@@ -1,11 +1,18 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 import Home from './components/Homepage/Home'
 import Signup, { Login } from './components/Signup/Signup'
 import Navbar from './components/Navbar/Navbar'
 import CreatePost from './components/CreatePost/CreatePost'
-import Posts from './components/Posts/Posts'
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
+import About from './components/About/About'
+import Contact from './components/Contact/Contact'
+import Teams from './components/Teams/Teams'
+import Sports from './components/Sports/Sports'
+import Education from './components/Education/Education'
+import Tech from './components/Tech/Tech'
+import Politics from './components/Politics/Politics'
+
 
 
 function App() {
@@ -13,32 +20,23 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      <Posts />
-      {/* <CreatePost /> */}
-      {/* <Home /> */}
-      {/* <Login /> */}
-      {/* <Signup /> */}
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
+      <Router>
+         <Navbar />
+          <Routes>
+            <Route exact path='/' element={<Navigate replace to='/login' />} />
+            <Route exact path='/create_post' element={<CreatePost />} />
+            <Route exact path='/login' element={<Login />} />
+            <Route exact path='/signup' element={<Signup />} />
+            <Route exact path='/contact' element={<Contact />} />
+            <Route exact path='/about' element={<About />} />
+            <Route exact path='/teams' element={<Teams />} />
+            <Route exact path='/sports' element={<Sports />} />
+            <Route exact path='/tech' element={<Tech />} />
+            <Route exact path='/politics' element={<Politics />} />
+            <Route exact path='/education' element={<Education />} />
+          </Routes>
+      </Router>
+     
     </div>
   )
 }

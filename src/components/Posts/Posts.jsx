@@ -27,7 +27,7 @@ const Posts = () => {
 
   return (
     <>
-    <Heading textAlign={'center'} as='h3' size='lg' mt={'4'}>All Posts</Heading>
+    <Heading textAlign={'center'} as='h3' size='md' mt={'4'}>All Posts</Heading>
     <Flex flexWrap={'wrap'} justifyContent='space-around' alignItems={'center'} mt='6' mb='5'>
       {cards.map((card) => {
         return(

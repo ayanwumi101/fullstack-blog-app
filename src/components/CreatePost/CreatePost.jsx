@@ -72,7 +72,7 @@ const CreatePost = () => {
 
                 <FormLabel>Post Category</FormLabel>
                 <Select type='date' mb='5' placeholder='Select post category' value={category} onChange={(e) => setCategory(e.target.value)}>
-                  <option value='sports'>Sports</option>
+                  <option value='Sports'>Sports</option>
                   <option value='Tech'>Tech</option>
                   <option value='Education'>Education</option>
                   <option value='Entertainment'>Entertainment</option>

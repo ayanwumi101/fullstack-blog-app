@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react'
 import {Box, Flex, Heading} from '@chakra-ui/react'
 import Card from '../Card/Card'
 import {app} from '../../../firebaseConfig'
-import {query, getDocs, onSnapshot, collection, getFirestore, where} from 'firebase/firestore'
+import {query, getDocs, onSnapshot, collection, getFirestore, where, orderBy} from 'firebase/firestore'
 
 const Sports = () => {
   const [sports, setSports] = useState([]);
   const db = getFirestore();
   const colRef = collection(db, 'posts');
-  const q = query(colRef, where('post_category', '==', 'sports' ))
+  const q = query(colRef, where('post_category', '==', 'Sports' ), orderBy('createdAt'))
 
   useEffect(() => {
     onSnapshot(q, (snapshot) => {

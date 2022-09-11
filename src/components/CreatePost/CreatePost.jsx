@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Box, Heading, Text, FormControl, Input, FormLabel, Textarea, Button, Select, useToast, Container} from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
-import {getFirestore, collection, addDoc} from 'firebase/firestore'
+import {getFirestore, collection, addDoc, serverTimestamp} from 'firebase/firestore'
 import {useNavigate} from 'react-router-dom'
 
 
@@ -26,6 +26,7 @@ const CreatePost = () => {
           post_category: category,
           date: date,
           post_content: content,
+          createdAt: serverTimestamp(),
          }).then(() => {
            toast({
                 title: 'Post Published', 

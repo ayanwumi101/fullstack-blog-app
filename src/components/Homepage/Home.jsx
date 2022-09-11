@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Box, Text, Flex, Heading, } from '@chakra-ui/react'
 import Card from '../Card/Card'
 import {app} from '../../../firebaseConfig'
-import {getFirestore, collection, getDocs, onSnapshot} from 'firebase/firestore'
+import {getFirestore, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
 
 
 const Home = () => {
@@ -14,6 +14,7 @@ const Home = () => {
 
   //collection reference 
   const colref = collection(db, 'posts');
+  const q = query(colref, orderBy('createdAt'));
 
   //get collection data
 
@@ -30,7 +31,7 @@ const Home = () => {
   // }, [])
 
   useEffect(() => {
-    onSnapshot(colref, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
         let items = [];
         snapshot.docs.map((doc) => {
           items.push({...doc.data(), id: doc.id});
@@ -41,7 +42,7 @@ const Home = () => {
   return (
     <>
     <Box>
-       <Heading as='h2' size='md' textAlign={'center'} mt='3'>Welcome to Cody's Blog</Heading>
+       <Heading as='h2' size='lg' textAlign={'center'} mt='6'>Welcome to EcoScribes</Heading>
        {<Flex flexWrap={'wrap'} justifyContent='space-between'>{posts.map((post) => <Card post={post} key={post.id} />)}</Flex>}
     </Box>
     </>

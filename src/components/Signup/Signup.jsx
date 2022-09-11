@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Box, Heading, Text, FormControl, FormLabel, Input, Button, Stack, useToast, Container} from '@chakra-ui/react'
+import {Box, Heading, Text, FormControl, FormLabel, Input, Button, Stack, useToast, Flex, Container, HStack} from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
 import {getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword} from 'firebase/auth'
 import {useNavigate, Link} from 'react-router-dom'
@@ -44,9 +44,12 @@ const Signup = () => {
     }
 
   return (
-    <Container>
-    <Stack spacing='4' maxW={'450px'} margin='auto' mt='9'>
-        <Heading textAlign='center' mb='5'>Signup</Heading>
+    <Container mt='5'>
+          <Flex textAlign='center' justifyContent={'center'} spacing='-0.95'>
+                <Heading size={'2xl'} >Eco</Heading><Heading color='whatsapp.600'size={'2xl'}>Scribes</Heading>
+          </Flex>
+    <Stack spacing='4' maxW={'450px'} margin='auto'>
+        <Heading textAlign='center' mb='4' size={'lg'} mt='6'>Signup</Heading>
         <FormControl maxWidth='450px' textAlign={'left'} isRequired>
             <FormLabel>Username</FormLabel>
             <Input type='text' placeholder='input your username' mb='5'  maxWidth='450px' value={userName} onChange={(e) => setUserName(e.target.value)} />
@@ -107,8 +110,11 @@ export const Login = () => {
     }
     return(
         <>
-        <Container>
-            <Box maxWidth='400px' margin={'auto'} mt='9'>
+        <Container mt='4'>
+            <Flex textAlign='center'  mb='2' justifyContent={'center'} spacing='-0.95'>
+                <Heading size={'2xl'} >Eco</Heading><Heading color='whatsapp.600'size={'2xl'}>Scribes</Heading>
+            </Flex>
+            <Box maxWidth='400px' margin={'auto'} mt='6'>
                 <Heading mb='5' textAlign={'center'}>Login</Heading>
                 <FormControl textAlign={'left'} mb='4' isRequired>
                     <FormLabel>Email</FormLabel>

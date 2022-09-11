@@ -63,17 +63,22 @@ const Navbar = () => {
     <>
         {location.pathname !== '/login' && location.pathname !== '/signup' && (<Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                <IconButton size={'md'} icon={isOpen ? <CloseIcon /> : <HamburgerIcon />} aria-label={'open-menu'} display={{md: 'none'}} onClick={isOpen ? onClose : onOpen} />
+                <IconButton size={'md'} icon={isOpen ? <CloseIcon /> : <HamburgerIcon size='lg' />} aria-label={'open-menu'} display={{md: 'none'}} onClick={isOpen ? onClose : onOpen} />
 
                 <HStack spacing={10}>
-                    <Link to='/home' colorScheme={'teal'} _hover={{color: 'teal'}}><Box><Heading as='h4' size='md'>Cody's</Heading></Box></Link>
+                    <Link to='/home' colorScheme={'teal'} _hover={{color: 'teal'}}>
+                        <Flex alignItems={'center'}>
+                            <Heading as='h4' size={'lg'}>Eco</Heading>
+                            <Heading as='h4' size='lg' color={'whatsapp.700'}>Scribes</Heading>
+                        </Flex>
+                    </Link>
                     <HStack as={'nav'} spacing={4} display={{base: 'none', md: 'flex'}}>
                         {Links.map((link) => (<Link to={'/'+link}><NavLink key={link} onClick={onClose}>{link}</NavLink></Link>))}
                     </HStack>
                 </HStack>
 
                 <Flex alignItems={'center'}>
-                    <Link to='/create_post'><Button variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4} leftIcon={<AddIcon />} >Create</Button></Link>
+                    {/* <Link to='/create_post'><Button variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4} leftIcon={<AddIcon />} >Create</Button></Link> */}
 
                     <Menu>
                         <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>

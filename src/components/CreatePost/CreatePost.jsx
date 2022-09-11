@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Box, Heading, Text, FormControl, Input, FormLabel, Textarea, Button, Select, useToast,} from '@chakra-ui/react'
+import {Box, Heading, Text, FormControl, Input, FormLabel, Textarea, Button, Select, useToast, Container} from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, addDoc} from 'firebase/firestore'
 import {useNavigate} from 'react-router-dom'
@@ -51,6 +51,7 @@ const CreatePost = () => {
   }
 
   return (
+    <Container>
         <Box maxW={'500px'} margin='auto' mt='50px' mb='50px'>
             <Heading as='h3' size={'lg'} textAlign='center' mb='5'>Create New Post</Heading>
 
@@ -83,6 +84,7 @@ const CreatePost = () => {
             
                <Button type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit}>Publish</Button>
         </Box>
+      </Container>
   )
 }
 

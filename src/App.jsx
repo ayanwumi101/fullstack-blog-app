@@ -23,7 +23,7 @@ function App() {
       <Router>
          <Navbar />
           <Routes>
-            <Route exact path='/' element={<Home />} />
+            <Route exact path='/' element={<Navigate replace to='/login' />} />
             <Route exact path='/create_post' element={<CreatePost />} />
             <Route exact path='/login' element={<Login />} />
             <Route exact path='/signup' element={<Signup />} />
@@ -34,6 +34,7 @@ function App() {
             <Route exact path='/tech' element={<Tech />} />
             <Route exact path='/politics' element={<Politics />} />
             <Route exact path='/education' element={<Education />} />
+            <Route exact path='/home' element={<Home />}/>
           </Routes>
       </Router>
      

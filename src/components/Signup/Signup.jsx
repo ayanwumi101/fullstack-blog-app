@@ -86,7 +86,7 @@ export const Login = () => {
                     position: 'top-right'});
                 setEmail('');
                 setPassword('');
-                navigate('/');
+                navigate('/home');
             }).catch((err) => {
                 toast({
                     title: "User doesn't exist", 

@@ -12,6 +12,7 @@ import Sports from './components/Sports/Sports'
 import Education from './components/Education/Education'
 import Tech from './components/Tech/Tech'
 import Politics from './components/Politics/Politics'
+import PostDetails from './components/PostDetails/PostDetails'
 
 
 
@@ -34,7 +35,8 @@ function App() {
             <Route exact path='/tech' element={<Tech />} />
             <Route exact path='/politics' element={<Politics />} />
             <Route exact path='/education' element={<Education />} />
-            <Route exact path='/home' element={<Home />}/>
+            <Route exact path='/posts' element={<Home />}/>
+            <Route exact path='/posts/:id' element={<PostDetails />} />
           </Routes>
       </Router>
      

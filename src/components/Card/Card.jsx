@@ -2,12 +2,12 @@ import React from 'react'
 import {Box, Text, Heading, Button, HStack, Flex, Image, Container, SkeletonCircle, SkeletonText} from '@chakra-ui/react'
 import bimbs from '../../assets/bimbs.jpg';
 import {LinkIcon, ExternalLinkIcon} from '@chakra-ui/icons'
+import {Link} from 'react-router-dom'
 
 const Card = ({post}) => {
-  const {author_name, post_title, date, post_content, post_category} = post;
+  const {author_name, post_title, date, post_content, post_category, id} = post;
   return (
     <>
-        {/* <Container> */}
         <Flex flexWrap={'wrap'} justifyContent='space-around' alignItems='flex-start' margin='auto' mt='6' mb='2'>
             <Box dropShadow={'md'} w='300px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='10'>
                 <Image src={bimbs} h='250px' w='100%' borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
@@ -17,13 +17,12 @@ const Card = ({post}) => {
                         {post_content.substring(0,130) + ' ......'}
                     </Text>
                     <Flex justifyContent={'space-between'} alignItems='center'>
-                        <Button size={'sm'} colorScheme='teal'>Read more</Button>
+                        <Link to={`/posts/${id}`}><Button size={'sm'} colorScheme='teal'>Read more</Button></Link>
                         <Text><ExternalLinkIcon /> {post_category}</Text>
                     </Flex>
                 </Box>
             </Box>
         </Flex>
-        {/* </Container> */}
     </>
   )
 }

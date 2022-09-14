@@ -8,7 +8,7 @@ const Sports = () => {
   const [sports, setSports] = useState([]);
   const db = getFirestore();
   const colRef = collection(db, 'posts');
-  const q = query(colRef, where('post_category', '==', 'Sports' ), orderBy('createdAt'))
+  const q = query(colRef, where('post_category', '==', 'sports' ), )
 
   useEffect(() => {
     onSnapshot(q, (snapshot) => {

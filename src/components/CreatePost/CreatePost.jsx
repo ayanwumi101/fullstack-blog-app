@@ -2,7 +2,9 @@ import React, {useState} from 'react'
 import {Box, Heading, Text, FormControl, Input, FormLabel, Textarea, Button, Select, useToast, Container} from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, addDoc, serverTimestamp} from 'firebase/firestore'
-import {useNavigate} from 'react-router-dom'
+import {getStorage, ref, uploadBytes} from 'firebase/storage'
+import {useNavigate} from 'react-router-dom';
+import {v4} from 'uuid'
 
 
 const CreatePost = () => {
@@ -12,14 +14,22 @@ const CreatePost = () => {
   const [date, setDate] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('')
+  const [image, setImage] = useState(null)
   const navigate = useNavigate()
 
   const db = getFirestore();
   const colref = collection(db, 'posts');
+
+  const storage = getStorage();
+  
  
   const handleSubmit = (e) => {
       e.preventDefault();
-      if(title && authorName && date && category && content){
+      if(title && authorName && date && category && content && image){
+        const imageRef = ref(storage, `images/${image.name + v4()}`);
+        uploadBytes(imageRef, image).then(() => {
+          console.log('image uploaded');
+        });
          addDoc(colref, {
           author_name: authorName,
           post_title: title,
@@ -62,7 +72,7 @@ const CreatePost = () => {
                 <Input type='text' placeholder='Title of the post' mb='5' value={title} onChange={(e) => setTitle(e.target.value)} />
 
                 <FormLabel>Upload Image</FormLabel>
-                <Input type='file' mb='5' />
+                <Input type='file' mb='5' onChange={(e) => {setImage(e.target.files[0])}} />
 
                 <FormLabel>Author Name</FormLabel>
                 <Input type='text' mb='5' value={authorName} onChange={(e) => setAuthorName(e.target.value)} />

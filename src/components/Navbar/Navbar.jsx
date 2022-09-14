@@ -87,7 +87,7 @@ const Navbar = () => {
                             </Avatar>
                         </MenuButton>
 
-                        <MenuList>
+                        <MenuList zIndex={'overlay'}>
                             <MenuItem>Account</MenuItem>
                             <MenuItem>Profile</MenuItem>
                             <MenuDivider />

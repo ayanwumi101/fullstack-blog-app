@@ -45,10 +45,10 @@ const Signup = () => {
 
   return (
     <Container mt='5'>
-          <Flex textAlign='center' justifyContent={'center'} spacing='-0.95'>
-                <Heading size={'2xl'} >Eco</Heading><Heading color='whatsapp.600'size={'2xl'}>Scribes</Heading>
+          <Flex textAlign='center' justifyContent={'center'} spacing='-0.95' mb='3' borderRadius={'xl'}>
+                <Heading size={'xl'} >Eco</Heading><Heading color='whatsapp.600'size={'xl'}>Scribes</Heading>
           </Flex>
-    <Stack spacing='4' maxW={'450px'} margin='auto'>
+    <Stack spacing='4' maxW={'450px'} margin='auto' bg='gray.50' boxShadow='lg' p='5' pt='2'>
         <Heading textAlign='center' mb='4' size={'lg'} mt='6'>Signup</Heading>
         <FormControl maxWidth='450px' textAlign={'left'} isRequired>
             <FormLabel>Username</FormLabel>
@@ -112,10 +112,10 @@ export const Login = () => {
         <>
         <Container mt='4'>
             <Flex textAlign='center'  mb='2' justifyContent={'center'} spacing='-0.95'>
-                <Heading size={'2xl'} >Eco</Heading><Heading color='whatsapp.600'size={'2xl'}>Scribes</Heading>
+                <Heading size={'xl'} >Eco</Heading><Heading color='whatsapp.600'size={'xl'}>Scribes</Heading>
             </Flex>
-            <Box maxWidth='400px' margin={'auto'} mt='6'>
-                <Heading mb='5' textAlign={'center'}>Login</Heading>
+            <Box maxWidth='450px' margin={'auto'} mt='6' bg='gray.50' boxShadow='lg' p='5'>
+                <Heading mb='5' textAlign={'center'} size='lg'>Login</Heading>
                 <FormControl textAlign={'left'} mb='4' isRequired>
                     <FormLabel>Email</FormLabel>
                     <Input type='email' placeholder='Please input your email' maxWidth='400px' mb='5' value={email} onChange={(e) => setEmail(e.target.value)} />

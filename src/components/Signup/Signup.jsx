@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import {Box, Heading, Text, FormControl, FormLabel, Input, Button, Stack, useToast, Flex, Container, Avatar} from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
-import {getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth'
 import {useNavigate, Link} from 'react-router-dom'
-import {getStorage, uploadBytes, ref} from 'firebase/storage'
+import {getStorage, uploadBytes, ref, getDownloadURL} from 'firebase/storage'
 import {v4} from 'uuid'
 
 const Signup = () => {
@@ -13,22 +13,26 @@ const Signup = () => {
     const toast = useToast();
     const navigate = useNavigate();
     const [avatar, setAvatar] = useState(null);
+    const [url, setUrl] = useState(null);
 
     const auth = getAuth();
+    const user = auth.currentUser;
     const storage = getStorage();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if(userName && email && password && avatar){
 
-            const avatarRef = ref(storage, `avatar/${avatar.name + v4()}`);
+            const avatarRef = ref(storage, 'image');
             uploadBytes(avatarRef, avatar).then(() => {
                 console.log('avatar uploaded');
+                getDownloadURL(avatarRef)
+                    .then((url) => setUrl(url));
             });
 
-            createUserWithEmailAndPassword(auth, email, password).then((cred) => {
+            createUserWithEmailAndPassword(auth, email, password, url).then((cred) => {
                 console.log('user created', cred.user);
-                
+                cred.user.photoURL = url;
                 toast({
                     title: 'Account Created', 
                     description: 'Your account has been created successfully',
@@ -45,7 +49,6 @@ const Signup = () => {
             }).catch((err) => {
                 console.log(err.message);
             })
-
         }else{
              toast({
                     title: 'Invalid Credentials', 
@@ -124,6 +127,7 @@ export const Login = () => {
                     position: 'top'});
                 console.log(err.message);
             })
+
         }else{
             toast({
                     title: 'Invalid Credentials', 

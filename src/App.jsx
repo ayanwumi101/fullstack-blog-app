@@ -13,6 +13,9 @@ import Education from './components/Education/Education'
 import Tech from './components/Tech/Tech'
 import Politics from './components/Politics/Politics'
 import PostDetails from './components/PostDetails/PostDetails'
+import Profile from './components/Profile/Profile'
+import EditPost from './components/EditPost/EditPost'
+import Posts from './components/Posts/Posts'
 
 
 
@@ -35,8 +38,11 @@ function App() {
             <Route exact path='/tech' element={<Tech />} />
             <Route exact path='/politics' element={<Politics />} />
             <Route exact path='/education' element={<Education />} />
-            <Route exact path='/posts' element={<Home />}/>
+            <Route exact path='/home' element={<Home />}/>
+            <Route exact path='/posts' element={<Posts />} />
             <Route exact path='/posts/:id' element={<PostDetails />} />
+            <Route exact path='/profile' element={<Profile />} />
+            <Route exact ='/edit/:id' element={<EditPost />} />
           </Routes>
       </Router>
      

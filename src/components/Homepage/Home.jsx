@@ -3,6 +3,7 @@ import {Box, Text, Flex, Heading, } from '@chakra-ui/react'
 import Card from '../Card/Card'
 import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
+import {getDownloadURL} from 'firebase/storage'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import "swiper/css";
 import "swiper/css/pagination";

@@ -3,7 +3,7 @@ import {Box, VStack, Text, Button, Image, Heading, Container} from '@chakra-ui/r
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {useParams} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
-import {getFirestore, collection, query, onSnapshot, getDocs,} from 'firebase/firestore'
+import {getFirestore, collection, getDocs,} from 'firebase/firestore'
 import test from '../../assets/CODE.png'
 
 const PostDetails = () => {
@@ -14,11 +14,8 @@ const PostDetails = () => {
 
   //collection reference 
   const colref = collection(db, 'posts');
-  const q = query(colref);
   const {id} = useParams();
   console.log(id);
-
-  // 
 
   useEffect(() => {
     getDocs(colref).then((snapshot) => {
@@ -29,16 +26,10 @@ const PostDetails = () => {
         return setPosts(newPost);
       })
     })
-    //  onSnapshot(q, (snapshot) => {
-    //     let items = [];
-    //     snapshot.docs.map((doc) => {
-    //       items.push({...doc.data(), id: doc.id});
-    //       return setPosts(items)});
-    // });
+    
   }, []); 
   console.log(posts);
 
-    // const [newPost, setNewPost] = useState();
   return (
     <VStack>
       <Image src={test} />

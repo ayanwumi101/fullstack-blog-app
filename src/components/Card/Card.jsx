@@ -1,7 +1,7 @@
 import React from 'react'
 import {Box, Text, Heading, Button, HStack, Flex, Image, Container, SkeletonCircle, SkeletonText} from '@chakra-ui/react'
 import bimbs from '../../assets/bimbs.jpg';
-import {LinkIcon, ExternalLinkIcon} from '@chakra-ui/icons'
+import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {Link} from 'react-router-dom'
 
 const Card = ({post}) => {
@@ -16,10 +16,10 @@ const Card = ({post}) => {
                     <Text mt='3' mb='3' textAlign={'justify'}>
                         {post_content.substring(0,130) + ' ......'}
                     </Text>
-                    <Flex justifyContent={'space-between'} alignItems='center'>
-                        <Link to={`/posts/${id}`}><Button size={'sm'} colorScheme='teal'>Read more</Button></Link>
-                        <Text><ExternalLinkIcon /> {post_category}</Text>
+                    <Flex justifyContent={'space-between'} alignItems='center' mb='4'>
+                        <Text fontWeight={'semibold'}> Category: <ExternalLinkIcon /> {post_category}</Text>
                     </Flex>
+                    <Link to={`/posts/${id}`}><Button size={'sm'} w='100%' textAlign={'center'} colorScheme='teal'>Read more</Button></Link>
                 </Box>
             </Box>
         </Flex>

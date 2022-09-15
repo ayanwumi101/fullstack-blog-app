@@ -17,7 +17,7 @@ import {
     Heading, 
     AvatarBadge,FormControl, Input, FormLabel, Textarea, Select, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,} from '@chakra-ui/react'
 import {Link} from 'react-router-dom'
-import {HamburgerIcon, CloseIcon, AddIcon} from '@chakra-ui/icons'
+import {HamburgerIcon, CloseIcon, AddIcon, CheckCircleIcon, ExternalLinkIcon, DragHandleIcon} from '@chakra-ui/icons'
 import {useLocation} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
 import {signOut, getAuth} from 'firebase/auth'
@@ -29,9 +29,10 @@ const Navbar = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = useToast();
-  const [scrollBehavior, setScrollBehavior] = useState('outside');
   const location = useLocation();
   const auth = getAuth();
+  const user = auth.currentUser;
+  console.log(user);
   const navigate = useNavigate();
 
 
@@ -88,10 +89,11 @@ const Navbar = () => {
                         </MenuButton>
 
                         <MenuList zIndex={'overlay'}>
-                            <MenuItem>Account</MenuItem>
-                            <MenuItem>Profile</MenuItem>
+                            <Link to='/create_post'><MenuItem variant={'solid'} ><AddIcon mr='2' color={'whatsapp.700'} /> Create Post</MenuItem></Link>
+                            <Link to='/posts'><MenuItem><DragHandleIcon mr='2' color={'whatsapp.700'} />Posts</MenuItem></Link>
+                            <Link to='/profile'><MenuItem><CheckCircleIcon mr='2' color={'whatsapp.700'} /> Profile</MenuItem></Link>
                             <MenuDivider />
-                            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                            <MenuItem onClick={handleLogout}><ExternalLinkIcon mr='2' color={'whatsapp.700'} />Logout</MenuItem>
                         </MenuList>
                     </Menu>
                 </Flex>

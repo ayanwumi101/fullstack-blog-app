@@ -30,6 +30,7 @@ const CreatePost = () => {
         uploadBytes(imageRef, image).then(() => {
           console.log('image uploaded');
         });
+
          addDoc(colref, {
           author_name: authorName,
           post_title: title,
@@ -37,7 +38,8 @@ const CreatePost = () => {
           date: date,
           post_content: content,
           createdAt: serverTimestamp(),
-         }).then(() => {
+         })
+         .then(() => {
            toast({
                 title: 'Post Published', 
                 description: 'Your post has been published successfully',
@@ -51,6 +53,7 @@ const CreatePost = () => {
           setTitle('')
           navigate('/home')
          })
+
       }else{
            toast({
                 title: 'Error: Empty fields', 

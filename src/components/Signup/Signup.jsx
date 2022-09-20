@@ -4,12 +4,15 @@ import {app} from '../../../firebaseConfig'
 import {getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth'
 import {useNavigate, Link} from 'react-router-dom'
 import {getStorage, uploadBytes, ref, getDownloadURL} from 'firebase/storage'
+import { getFirestore, collection, addDoc,  } from 'firebase/firestore'
 import {v4} from 'uuid'
 
 const Signup = () => {
+    
     const [userName, setUserName] = useState('')
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [bio, setBio] = useState('');
     const toast = useToast();
     const navigate = useNavigate();
     const [avatar, setAvatar] = useState(null);
@@ -17,38 +20,59 @@ const Signup = () => {
 
     const auth = getAuth();
     const user = auth.currentUser;
-    const storage = getStorage();
+    const db = getFirestore();
+    const userRef = collection(db, 'user_info');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(userName && email && password && avatar){
+        if(userName && email && password && avatar && bio){
 
-            const avatarRef = ref(storage, 'image');
-            uploadBytes(avatarRef, avatar).then(() => {
-                console.log('avatar uploaded');
-                getDownloadURL(avatarRef)
-                    .then((url) => setUrl(url));
-            });
+            // const avatarRef = ref(storage, 'image');
+            // uploadBytes(avatarRef, avatar).then(() => {
+            //     console.log('avatar uploaded');
+            //     getDownloadURL(avatarRef)
+            //         .then((url) => setUrl(url));
+            // });
 
             createUserWithEmailAndPassword(auth, email, password, url).then((cred) => {
                 console.log('user created', cred.user);
-                cred.user.photoURL = url;
+                // cred.user.photoURL = url;
+
+                //   addDoc(userRef, {
+                //     user_id: cred.user.uid,
+                //     bio: bio,
+                //     username: userName,
+                //   }).then(() => {
+                //     console.log('user details added to the database');
+                //   });
+
+                return db.collection('user_info').doc(cred.user.uid).set({
+                    bio: bio,
+                    username: userName,
+                    user_id: cred.user.id
+                })
+            })
+            .then(() => {
                 toast({
                     title: 'Account Created', 
                     description: 'Your account has been created successfully',
                     status: 'success', duration: '5000',
                     isClosable: 'true', 
-                    position: 'top-right'});
+                    position: 'top-right'
+                });
 
                 setEmail('');
                 setPassword('');
                 setUserName('');
+                setBio('');
                 navigate('/login');
                 signOut(auth);
                 console.log('user signed out');
-            }).catch((err) => {
-                console.log(err.message);
             })
+            .catch((err) => {
+                console.log(err.message);
+            });
+
         }else{
              toast({
                     title: 'Invalid Credentials', 
@@ -77,6 +101,9 @@ const Signup = () => {
 
             <FormLabel>Username</FormLabel>
             <Input type='text' placeholder='input your username' mb='5'  maxWidth='450px' value={userName} onChange={(e) => setUserName(e.target.value)} />
+
+            <FormLabel>Bio</FormLabel>
+            <Input type='text' placeholder='let us know a little about you' mb='5'  maxWidth='450px' value={bio} onChange={(e) => setBio(e.target.value)} />
 
             <FormLabel>Email</FormLabel>
             <Input type='email' placeholder='input your email' mb='5'  maxWidth='450px' value={email} onChange={(e) => setEmail(e.target.value)} />

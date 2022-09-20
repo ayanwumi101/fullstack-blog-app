@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {Box, Text, Flex, Heading, } from '@chakra-ui/react'
+import {Box, Text, Flex, Heading, Button} from '@chakra-ui/react'
 import Card from '../Card/Card'
 import {app} from '../../../firebaseConfig'
+import {getAuth, onAuthStateChanged} from 'firebase/auth'
 import {getFirestore, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
 import {getDownloadURL} from 'firebase/storage'
 import {Swiper, SwiperSlide} from 'swiper/react'
+import {Link} from 'react-router-dom'
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -15,11 +17,16 @@ import second from '../../assets/CODES.png'
 import third from '../../assets/test.png'
 import fourth from '../../assets/blog1.png'
 import fifth from '../../assets/blog3.png'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 
 
 const Home = () => {
 
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState([])
+
+  //initialize firebase auth service
+  const auth = getAuth();
 
    //initialize firestore
   const db = getFirestore();
@@ -29,18 +36,26 @@ const Home = () => {
   const q = query(colref);
 
   useEffect(() => {
-    onSnapshot(q, (snapshot) => {
-        let items = [];
-        snapshot.docs.map((doc) => {
+    auth.onAuthStateChanged((user) => {
+      console.log(user);
+      if(user){
+        onSnapshot(q, (snapshot) => {
+          let items = [];
+          snapshot.docs.map((doc) => {
           items.push({...doc.data(), id: doc.id});
           return setPosts(items)});
-      })
+        });
+
+      }else{
+        setUser(user)
+      }
+    })
   }, [])
 
 
   return (
     <>
-       <Swiper
+       {user ? <Box><Swiper
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
@@ -54,7 +69,6 @@ const Home = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        {/* <SwiperSlide><img src={bimb} alt="post image" /></SwiperSlide> */}
         <SwiperSlide><img src={first} alt="" /></SwiperSlide>
         <SwiperSlide><img src={second} alt="" /></SwiperSlide>
         <SwiperSlide><img src={third} alt="" /></SwiperSlide>
@@ -64,7 +78,10 @@ const Home = () => {
     <Box>
        {/* <Heading as='h2' size='lg' textAlign={'center'} mt='6'>Welcome to EcoScribes</Heading> */}
        {<Flex flexWrap={'wrap'} justifyContent='space-between'>{posts.map((post) => <Card post={post} key={post.id} />)}</Flex>}
-    </Box>
+    </Box></Box> : <Box textAlign='center' mt='100px'>
+          <Text size={'xl'} mb='5'>Please Login or Create an account to view posts.</Text>
+          <Link to='/login'><Button colorScheme='teal' size='sm'>Login <ExternalLinkIcon ml='1' /></Button></Link>
+        </Box>}
     </>
   )
 }

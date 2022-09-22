@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {Box, Heading, Text, FormControl, FormLabel, Input, Button, Stack, useToast, Flex, Container, Avatar} from '@chakra-ui/react'
+import {BsCameraFill} from 'react-icons/bs'
 import {app} from '../../../firebaseConfig'
 import {getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth'
 import {useNavigate, Link} from 'react-router-dom'
@@ -92,12 +93,13 @@ const Signup = () => {
         <Heading textAlign='center' mb='4' size={'lg'} mt='6'>Signup</Heading>
         <FormControl maxWidth='450px' textAlign={'left'} isRequired>
 
-            <Flex justify={'center'} mb='5'>
+            <Flex justifyContent={'center'} alignItems='center' margin={'auto'} mb='5' position={'relative'} maxW='150px'>
                 <Avatar src='' name={userName} size='xl' />
+                <FormLabel htmlFor='avatar' position={'absolute'} bottom='-38px' right='15px'>
+                  <BsCameraFill style={{width: '30px', height: '30px'}} />
+                  <Input type='file' onChange={(e) => setAvatar(e.target.files[0])} mb='5' id='avatar' display={'none'} />
+                </FormLabel>
             </Flex>
-
-            <FormLabel>Select your avatar</FormLabel>
-            <Input type='file' onChange={(e) => setAvatar(e.target.files[0])} mb='5'  maxWidth='450px'/>
 
             <FormLabel>Username</FormLabel>
             <Input type='text' placeholder='input your username' mb='5'  maxWidth='450px' value={userName} onChange={(e) => setUserName(e.target.value)} />

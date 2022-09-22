@@ -31,8 +31,6 @@ const Navbar = () => {
   const toast = useToast();
   const location = useLocation();
   const auth = getAuth();
-  const user = auth.currentUser;
-  console.log(user);
   const navigate = useNavigate();
 
 
@@ -82,19 +80,24 @@ const Navbar = () => {
                     {/* <Link to='/create_post'><Button variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4} leftIcon={<AddIcon />} >Create</Button></Link> */}
 
                     <Menu>
-                        <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                            <Avatar src='' size={'sm'} >
-                                <AvatarBadge bg='green.500' boxSize='1.25em' />
-                            </Avatar>
-                        </MenuButton>
+                       {auth.onAuthStateChanged((user) => {
+                        {user &&
+                        <>  
+                            <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                                <Avatar src='' size={'sm'} >
+                                    <AvatarBadge bg='green.500' boxSize='1.25em' />
+                                </Avatar>
+                            </MenuButton>
 
-                        <MenuList zIndex={'overlay'}>
-                            <Link to='/create_post'><MenuItem variant={'solid'} ><AddIcon mr='2' color={'whatsapp.700'} /> Create Post</MenuItem></Link>
-                            <Link to='/posts'><MenuItem><DragHandleIcon mr='2' color={'whatsapp.700'} />Posts</MenuItem></Link>
-                            <Link to='/profile'><MenuItem><CheckCircleIcon mr='2' color={'whatsapp.700'} /> Profile</MenuItem></Link>
-                            <MenuDivider />
-                            <MenuItem onClick={handleLogout}><ExternalLinkIcon mr='2' color={'whatsapp.700'} />Logout</MenuItem>
-                        </MenuList>
+                            <MenuList zIndex={'overlay'}>
+                                <Link to='/create_post'><MenuItem variant={'solid'} ><AddIcon mr='2' color={'whatsapp.700'} /> Create Post</MenuItem></Link>
+                                <Link to='/posts'><MenuItem><DragHandleIcon mr='2' color={'whatsapp.700'} />Posts</MenuItem></Link>
+                                <Link to='/profile'><MenuItem><CheckCircleIcon mr='2' color={'whatsapp.700'} /> Profile</MenuItem></Link>
+                                <MenuDivider />
+                                <MenuItem onClick={handleLogout}><ExternalLinkIcon mr='2' color={'whatsapp.700'} />Logout</MenuItem>
+                            </MenuList>
+                        </>}
+                       })}
                     </Menu>
                 </Flex>
             </Flex>

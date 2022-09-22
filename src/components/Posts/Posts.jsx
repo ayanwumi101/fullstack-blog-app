@@ -106,20 +106,25 @@ export const EditForm = () => {
       <Heading size='md' textAlign={'center'} mb='3'>Edit Post</Heading>
       <FormControl>
         <FormLabel>Post title</FormLabel>
-        <Input type='text' />
+        <Input type='text' mb='2' />
+
         <FormLabel>Date</FormLabel>
-        <Input type='date' />
+        <Input type='date' mb='2' />
+
         <FormLabel>Author Name</FormLabel>
-        <Input type='text' />
+        <Input type='text' mb='2' />
+
         <FormLabel>Post Category</FormLabel>
-        <Select>
+        <Select mb='2'>
           <option value="sports">Sports</option>
           <option value="education">Education</option>
           <option value="tech">Tech</option>
           <option value="politics">Politics</option>
         </Select>
+
         <FormLabel>Post Content</FormLabel>
-        <Textarea></Textarea>
+        <Textarea mb='2'></Textarea>
+
         <Button size='sm' colorScheme={'teal'} textAlign={'right'}>Update Post</Button>
       </FormControl>
         {/* <Modal>
@@ -129,5 +134,13 @@ export const EditForm = () => {
           </ModalHeader>
         </Modal> */}
     </Box>
+  )
+}
+
+export const DeletePost = () => {
+  return (
+    <>
+
+    </>
   )
 }

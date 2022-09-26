@@ -28,6 +28,7 @@ import {useNavigate} from 'react-router-dom'
 const Navbar = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [user, setUser] = useState();
   const toast = useToast();
   const location = useLocation();
   const auth = getAuth();
@@ -40,6 +41,11 @@ const Navbar = () => {
           {children}
       </Link>
   )
+
+
+  auth.onAuthStateChanged((user) => {
+    setUser(user);
+  })
 
 
   const handleLogout = () => {
@@ -80,7 +86,6 @@ const Navbar = () => {
                     {/* <Link to='/create_post'><Button variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4} leftIcon={<AddIcon />} >Create</Button></Link> */}
 
                     <Menu>
-                       {auth.onAuthStateChanged((user) => {
                         {user &&
                         <>  
                             <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
@@ -97,7 +102,6 @@ const Navbar = () => {
                                 <MenuItem onClick={handleLogout}><ExternalLinkIcon mr='2' color={'whatsapp.700'} />Logout</MenuItem>
                             </MenuList>
                         </>}
-                       })}
                     </Menu>
                 </Flex>
             </Flex>

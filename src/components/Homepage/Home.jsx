@@ -37,6 +37,7 @@ const Home = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+      setUser(user)
       console.log(user);
       if(user){
         onSnapshot(q, (snapshot) => {
@@ -46,8 +47,6 @@ const Home = () => {
           return setPosts(items)});
         });
 
-      }else{
-        setUser(user)
       }
     })
   }, [])

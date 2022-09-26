@@ -79,6 +79,12 @@ const Posts = () => {
         isClosable: 'true',
         position: 'top-right'
       });
+      setAuthorName('');
+      setCategory('');
+      setTitle('');
+      setDate('');
+      setContent('');
+      setShowModal(false);
     })
   }
 
@@ -124,16 +130,16 @@ const Posts = () => {
                       <Heading textAlign={'center'} size='md' m='3'>Edit Post</Heading>
 
                       <FormLabel>Post title</FormLabel>
-                      <Input type='text' mb='2' value={newData ? newData.post_title : ''} onChange={(e) => setTitle(e.target.value)} />
+                      <Input type='text' mb='2' value={title} placeholder={newData ? newData.post_title : ''} onChange={(e) => setTitle(e.target.value)} />
 
                       <FormLabel>Date</FormLabel>
-                      <Input type='date' mb='2' value={newData ? newData.date : ''} onChange={(e) => setDate(e.target.value)} />
+                      <Input type='date' mb='2' value={date} placeholder={newData ? newData.date : ''} onChange={(e) => setDate(e.target.value)} />
 
                       <FormLabel>Author Name</FormLabel>
-                      <Input type='text' mb='2' value={newData ? newData.author_name : ''} onChange={(e) => setAuthorName(e.target.value)} />
+                      <Input type='text' mb='2' value={authorName} placeholder={newData ? newData.author_name : ''} onChange={(e) => setAuthorName(e.target.value)} />
 
                       <FormLabel>Post Category</FormLabel>
-                      <Select mb='2' value={newData ? newData.post_category : ''} onChange={(e) => setCategory(e.target.value)}>
+                      <Select mb='2' value={category} onChange={(e) => setCategory(e.target.value)}>
                         <option value="sports">Sports</option>
                         <option value="education">Education</option>
                         <option value="tech">Tech</option>
@@ -141,10 +147,10 @@ const Posts = () => {
                       </Select>
 
                       <FormLabel>Post Content</FormLabel>
-                      <Textarea value={newData ? newData.post_content : ''} onChange={(e) => setContent(e.target.value)}></Textarea>
+                      <Textarea value={content} placeholder={newData ? newData.post_content : ''} onChange={(e) => setContent(e.target.value)}></Textarea>
 
                       <Button mr='9' size='sm' w='100px' mt='3' onClick={() => setShowModal(false)}>Cancel</Button>
-                      <Button size='sm' colorScheme={'teal'} w='100px' mt='3' float='right' textAlign={'right'} onClick={updatePost} id={ newData? newData.id : ''}>Update Post</Button>
+                      <Button size='sm' colorScheme={'teal'} w='100px' mt='3' float='right' textAlign={'right'} onClick={updatePost} id={ newData ? newData.id : ''}>Update Post</Button>
                     </FormControl>
             </Box>
         </Box>}

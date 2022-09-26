@@ -76,7 +76,6 @@ const Home = () => {
         <SwiperSlide><img src={fifth} alt="" /></SwiperSlide>
       </Swiper>
     <Box>
-       {/* <Heading as='h2' size='lg' textAlign={'center'} mt='6'>Welcome to EcoScribes</Heading> */}
        {<Flex flexWrap={'wrap'} justifyContent='space-between'>{posts.map((post) => <Card post={post} key={post.id} />)}</Flex>}
     </Box></Box> : <Box textAlign='center' mt='100px'>
           <Text size={'xl'} mb='5'>Please Login or Create an account to view posts.</Text>

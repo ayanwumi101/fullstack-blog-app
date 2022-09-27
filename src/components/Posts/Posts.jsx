@@ -111,7 +111,7 @@ const Posts = () => {
               key={post.id}
             >
               <Image src={bimbs} h='70px' w='70px' borderRadius={'md'} />
-                <Heading as='h3' size={'sm'}>{post.post_title}</Heading>
+                <Heading as='h3' size={'sm'}>{post.post_title.substring(0,35)}...</Heading>
                 <Text>Author: {post.author_name}</Text>
                 <Text>Category: {post.post_category}</Text>
                 <Text>Date: {post.date}</Text>

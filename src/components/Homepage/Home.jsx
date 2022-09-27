@@ -4,7 +4,7 @@ import Card from '../Card/Card'
 import {app} from '../../../firebaseConfig'
 import {getAuth, onAuthStateChanged} from 'firebase/auth'
 import {getFirestore, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
-import {getDownloadURL} from 'firebase/storage'
+import {getDownloadURL, getStorage, listAll, ref} from 'firebase/storage'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import {Link} from 'react-router-dom'
 import "swiper/css";
@@ -24,12 +24,17 @@ const Home = () => {
 
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState([])
+  const [postImages, setPostImages] = useState([])
 
   //initialize firebase auth service
   const auth = getAuth();
 
    //initialize firestore
   const db = getFirestore();
+
+  //get firestore storage
+  const storage = getStorage();
+  const imagesRef = ref(storage, 'images');
 
   //collection reference 
   const colref = collection(db, 'posts');
@@ -48,7 +53,18 @@ const Home = () => {
         });
 
       }
+    });
+
+    listAll(imagesRef).then((response) => {
+      console.log(response);
+      response.items.map((item) => {
+        getDownloadURL(item).then((url) => {
+          setPostImages((prev) => [...prev, url]);
+          console.log(postImages);
+        })
+      })
     })
+
   }, [])
 
 
@@ -68,11 +84,9 @@ const Home = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide><img src={first} alt="" /></SwiperSlide>
-        <SwiperSlide><img src={second} alt="" /></SwiperSlide>
-        <SwiperSlide><img src={third} alt="" /></SwiperSlide>
-        <SwiperSlide><img src={fourth} alt="" /></SwiperSlide>
-        <SwiperSlide><img src={fifth} alt="" /></SwiperSlide>
+        
+        {postImages.map((slide, index) => <SwiperSlide key={index}><img src={slide} alt="" /></SwiperSlide> )}
+        
       </Swiper>
     <Box>
        {<Flex flexWrap={'wrap'} justifyContent='space-between'>{posts.map((post) => <Card post={post} key={post.id} />)}</Flex>}

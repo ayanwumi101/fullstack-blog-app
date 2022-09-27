@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from 'react'
+import React, {ReactNode, useState, useEffect} from 'react'
 import {
     Flex,
     Box, 
@@ -20,19 +20,20 @@ import {Link} from 'react-router-dom'
 import {HamburgerIcon, CloseIcon, AddIcon, CheckCircleIcon, ExternalLinkIcon, DragHandleIcon} from '@chakra-ui/icons'
 import {useLocation} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
-import {signOut, getAuth} from 'firebase/auth'
-import {useNavigate} from 'react-router-dom'
+import {signOut, getAuth, updateProfile} from 'firebase/auth'
+import {getStorage, getDownloadURL, ref} from 'firebase/storage'
 
 
 
 const Navbar = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [user, setUser] = useState();
+  const [currentUser, setCurrentUser] = useState([]);
+  const [photoUrl, setPhotoUrl] = useState(null)
   const toast = useToast();
   const location = useLocation();
+  const storage = getStorage();
   const auth = getAuth();
-  const navigate = useNavigate();
 
 
   const Links = ['Sports', 'Tech', 'Education', 'Politics', 'About', 'Teams', 'Contact'];
@@ -42,10 +43,19 @@ const Navbar = () => {
       </Link>
   )
 
-
-  auth.onAuthStateChanged((user) => {
-    setUser(user);
-  })
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+        if(user){
+            setCurrentUser(user)
+            const imageRef = ref(storage, user.uid);
+            getDownloadURL(imageRef);
+            updateProfile(user, {photoUrl: photoUrl})
+            setPhotoUrl(user.photoURL);
+        }
+        
+    })
+    //   const imageRef = ref(storage, currentUser.uid)
+  }, [])
 
 
   const handleLogout = () => {
@@ -83,13 +93,11 @@ const Navbar = () => {
                 </HStack>
 
                 <Flex alignItems={'center'}>
-                    {/* <Link to='/create_post'><Button variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4} leftIcon={<AddIcon />} >Create</Button></Link> */}
 
                     <Menu>
-                        {user &&
-                        <>  
+                       {currentUser && <>  
                             <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                                <Avatar src='' size={'sm'} >
+                                <Avatar src={photoUrl} size={'sm'} >
                                     <AvatarBadge bg='green.500' boxSize='1.25em' />
                                 </Avatar>
                             </MenuButton>

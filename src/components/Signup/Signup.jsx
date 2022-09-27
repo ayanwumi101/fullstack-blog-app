@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {Box, Heading, Text, FormControl, FormLabel, Input, Button, Stack, useToast, Flex, Container, Avatar} from '@chakra-ui/react'
 import {BsCameraFill} from 'react-icons/bs'
 import {app} from '../../../firebaseConfig'
@@ -17,43 +17,39 @@ const Signup = () => {
     const toast = useToast();
     const navigate = useNavigate();
     const [avatar, setAvatar] = useState(null);
-    const [url, setUrl] = useState(null);
+    const [user, setUser] = useState([]);
+
 
     const auth = getAuth();
-    const user = auth.currentUser;
     const db = getFirestore();
-    const userRef = collection(db, 'user_info');
+    const storage = getStorage();  
+
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+            setUser(user)
+        })
+    }, [])
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if(userName && email && password && avatar && bio){
-
-            // const avatarRef = ref(storage, 'image');
-            // uploadBytes(avatarRef, avatar).then(() => {
-            //     console.log('avatar uploaded');
-            //     getDownloadURL(avatarRef)
-            //         .then((url) => setUrl(url));
-            // });
+            
 
             createUserWithEmailAndPassword(auth, email, password, url).then((cred) => {
-                console.log('user created', cred.user);
-                // cred.user.photoURL = url;
-
-                //   addDoc(userRef, {
-                //     user_id: cred.user.uid,
+                const avatarRef = ref(storage, cred.user.uid);
+                uploadBytes(avatarRef, avatar).then(() => {
+                    console.log('avatar uploaded');
+                });
+                console.log('user created', cred.user.uid);
+                // return db.collection('user_info').doc(cred.user.uid).set({
                 //     bio: bio,
                 //     username: userName,
-                //   }).then(() => {
-                //     console.log('user details added to the database');
-                //   });
-
-                return db.collection('user_info').doc(cred.user.uid).set({
-                    bio: bio,
-                    username: userName,
-                    user_id: cred.user.id
-                })
+                //     user_id: cred.user.id
+                // })
             })
             .then(() => {
+                
                 toast({
                     title: 'Account Created', 
                     description: 'Your account has been created successfully',

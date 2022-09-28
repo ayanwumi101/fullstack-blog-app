@@ -36,17 +36,12 @@ const Signup = () => {
         if(userName && email && password && avatar && bio){
             
 
-            createUserWithEmailAndPassword(auth, email, password, url).then((cred) => {
+            createUserWithEmailAndPassword(auth, email, password).then((cred) => {
                 const avatarRef = ref(storage, cred.user.uid);
                 uploadBytes(avatarRef, avatar).then(() => {
                     console.log('avatar uploaded');
                 });
                 console.log('user created', cred.user.uid);
-                // return db.collection('user_info').doc(cred.user.uid).set({
-                //     bio: bio,
-                //     username: userName,
-                //     user_id: cred.user.id
-                // })
             })
             .then(() => {
                 

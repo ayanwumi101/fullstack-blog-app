@@ -18,7 +18,7 @@ import {
     AvatarBadge,FormControl, Input, FormLabel, Textarea, Select, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,} from '@chakra-ui/react'
 import {Link} from 'react-router-dom'
 import {HamburgerIcon, CloseIcon, AddIcon, CheckCircleIcon, ExternalLinkIcon, DragHandleIcon} from '@chakra-ui/icons'
-import {useLocation} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
 import {signOut, getAuth, updateProfile} from 'firebase/auth'
 import {getStorage, getDownloadURL, ref} from 'firebase/storage'
@@ -29,11 +29,12 @@ const Navbar = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [currentUser, setCurrentUser] = useState([]);
-  const [photoUrl, setPhotoUrl] = useState(null)
+  const [photoUrl, setPhotoUrl] = useState('')
   const toast = useToast();
   const location = useLocation();
   const storage = getStorage();
   const auth = getAuth();
+  const navigate = useNavigate();
 
 
   const Links = ['Sports', 'Tech', 'Education', 'Politics', 'About', 'Teams', 'Contact'];
@@ -45,16 +46,15 @@ const Navbar = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+        setCurrentUser(user);
         if(user){
-            setCurrentUser(user)
             const imageRef = ref(storage, user.uid);
-            getDownloadURL(imageRef);
-            updateProfile(user, {photoUrl: photoUrl})
-            setPhotoUrl(user.photoURL);
+            getDownloadURL(imageRef).then((url) => {
+                setPhotoUrl(url);
+            });
         }
         
     })
-    //   const imageRef = ref(storage, currentUser.uid)
   }, [])
 
 

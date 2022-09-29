@@ -3,22 +3,40 @@ import {Box, Text, Heading, Button, HStack, Flex, Image, Container, SkeletonCirc
 import bimbs from '../../assets/bimbs.jpg';
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {Link} from 'react-router-dom'
+import { ref, getStorage, getDownloadURL, listAll } from 'firebase/storage'
+import {query, collection, where, getFirestore, onSnapshot} from 'firebase/firestore'
 
-const Card = ({post, postImage}) => {
-  const [mainImage, setMainImage] = useState(postImage);
-  console.log();
+
+const Card = ({post}) => {
   const { author_name, post_title, date, post_content, post_category, id, post_id } = post;
+  const [mainImage, setMainImage] = useState([]);
+  const [newImage, setNewImage] = useState('')
+
+  //init firebase storage
+  const storage = getStorage();
+  const imageRef = ref(storage, 'post_images');
+
+  //init firestore database
+  const db = getFirestore();
+  const colRef = collection(db, 'posts');
   useEffect(() => {
-    // const main = postImage.find((item) => item === post_id);
-    // setMainImage(main);
-    // console.log(mainImage);
+
+    //fetching the images
+    listAll(imageRef).then((response) => {
+      const items = response.items.find((item) => item.name === post_id);
+      getDownloadURL(items).then((url) => {
+        console.log(url);
+        setNewImage(url)
+      });
+    })
+    
   }, []);
 
   return (
     <>
         <Flex flexWrap={'wrap'} justifyContent='space-around' alignItems='flex-start' margin='auto' mt='6' mb='2'>
             <Box dropShadow={'md'} w='300px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='10'>
-                <Image src={mainImage} h='250px' w='100%' borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
+                <Image src={newImage} h='250px' w='100%' borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
                 <Box p='3'>
                     <Heading as='h3' size={'md'}>{post_title}</Heading>
                     <Text mt='3' mb='3' textAlign={'justify'}>

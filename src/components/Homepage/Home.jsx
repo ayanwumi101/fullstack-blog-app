@@ -82,7 +82,7 @@ const Home = () => {
         className="mySwiper"
       >
         
-        {/* {postImages.map((slide, index) => <SwiperSlide key={index}><img src={slide} alt="" /></SwiperSlide> )} */}
+        {postImages.map((slide, index) => <SwiperSlide key={index}><img src={slide} alt="" /></SwiperSlide> )}
         
       </Swiper>
       <Box>

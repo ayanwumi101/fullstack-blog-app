@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Avatar, AvatarBadge, Heading, Text, HStack, Container, Button } from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
-import {getAuth, onAuthStateChanged} from 'firebase/auth'
+import {getAuth} from 'firebase/auth'
 import {getDoc, doc, getFirestore} from 'firebase/firestore'
+import {getStorage, ref, getDownloadURL} from 'firebase/storage'
 import { Link } from 'react-router-dom'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
@@ -10,19 +11,26 @@ import { ExternalLinkIcon } from '@chakra-ui/icons'
 const Profile = () => {
   const [userProfile, setUserProfile] = useState([]);
   const [bio, setBio] = useState([])
+  const [avatar, setAvatar] = useState('');
   const auth = getAuth();
 
+  //init firebase storage
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-        console.log(user);   
+        setUserProfile(user)   
         if(user){
             const db = getFirestore();
+            const storage = getStorage();
+            const avatarRef = ref(storage,user.uid);
             const docRef = doc(db, "user_info", user.uid);
+
+            getDownloadURL(avatarRef).then((url) => {
+              setAvatar(url);
+            });
+
             getDoc(docRef).then((doc) => {
               console.log(doc.data());
-            })
-        }else{
-          setUserProfile(user)
+            });
         }
     });
   }, [])
@@ -31,7 +39,7 @@ const Profile = () => {
     <>
         {userProfile ? <Box maxW={'400px'} p='3' margin={'auto'} mt='4'>
             <Box textAlign={'center'} mb='9'>
-              <Avatar size='xl' src=''>
+              <Avatar size='xl' src={avatar}>
                 <AvatarBadge bg='green.500' boxSize='7' />
               </Avatar>
             </Box>
@@ -43,11 +51,11 @@ const Profile = () => {
             </HStack>
             <HStack mb='4' spacing={'3'}>
               <Text>Email:</Text>
-              <Heading size='sm'>{userProfile ? userProfile.email : ''}</Heading>
+              <Heading size='sm'>{userProfile.email}</Heading>
             </HStack>
             <HStack mb='4' spacing={'3'}>
               <Text>Membership Status:</Text>
-              <Heading size='sm'>Admin</Heading>
+              <Heading size='sm'>User</Heading>
             </HStack>
             <HStack mb='4' spacing={'3'}>
               <Text>Status: </Text>
@@ -57,10 +65,10 @@ const Profile = () => {
               <Text>Verification Status:</Text>
               <Heading size='sm'>Unverified</Heading>
             </HStack>
-            <HStack mb='4' spacing={'3'}>
+            {/* <HStack mb='4' spacing={'3'}>
               <Text>Signup Date:</Text>
-              <Heading size='sm'>{userProfile.metadata ? userProfile.metadata.creationTime : ''}</Heading>
-            </HStack>
+              <Heading size='sm'>{userProfile.metadata.creationTime}</Heading>
+            </HStack> */}
             </Box>
           
         </Box> : <Box textAlign='center' mt='100px'>

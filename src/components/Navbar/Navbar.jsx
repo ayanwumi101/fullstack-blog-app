@@ -20,7 +20,7 @@ import {Link} from 'react-router-dom'
 import {HamburgerIcon, CloseIcon, AddIcon, CheckCircleIcon, ExternalLinkIcon, DragHandleIcon} from '@chakra-ui/icons'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
-import {signOut, getAuth, updateProfile} from 'firebase/auth'
+import {signOut, getAuth} from 'firebase/auth'
 import {getStorage, getDownloadURL, ref} from 'firebase/storage'
 
 
@@ -103,8 +103,9 @@ const Navbar = () => {
                             </MenuButton>
 
                             <MenuList zIndex={'overlay'}>
-                                <Link to='/create_post'><MenuItem variant={'solid'} ><AddIcon mr='2' color={'whatsapp.700'} /> Create Post</MenuItem></Link>
-                                <Link to='/posts'><MenuItem><DragHandleIcon mr='2' color={'whatsapp.700'} />Posts</MenuItem></Link>
+                                    { currentUser.email === "admin@gmail.com" && <><Link to='/create_post'><MenuItem variant={'solid'} ><AddIcon mr='2' color={'whatsapp.700'} /> Create Post</MenuItem></Link>
+                                    <Link to='/posts'><MenuItem><DragHandleIcon mr='2' color={'whatsapp.700'} />Posts</MenuItem></Link></>}
+                                  <MenuDivider />
                                 <Link to='/profile'><MenuItem><CheckCircleIcon mr='2' color={'whatsapp.700'} /> Profile</MenuItem></Link>
                                 <MenuDivider />
                                 <MenuItem onClick={handleLogout}><ExternalLinkIcon mr='2' color={'whatsapp.700'} />Logout</MenuItem>

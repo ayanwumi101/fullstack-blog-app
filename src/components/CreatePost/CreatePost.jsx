@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Heading, Text, FormControl, Input, FormLabel, Textarea, Button, Select, useToast, Container } from '@chakra-ui/react'
+import { FaImage } from 'react-icons/fa'
 import { app } from '../../../firebaseConfig'
 import { getFirestore, collection, addDoc, serverTimestamp} from 'firebase/firestore'
 import { getStorage, ref, uploadBytes } from 'firebase/storage'
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import '../Posts/modal.css'
 
 
 const CreatePost = () => {
@@ -80,8 +84,14 @@ const CreatePost = () => {
           <FormLabel>Post Title</FormLabel>
           <Input type='text' placeholder='Title of the post' mb='5' value={title} onChange={(e) => setTitle(e.target.value)} />
 
-          <FormLabel>Upload Image</FormLabel>
-          <Input type='file' mb='5' onChange={(e) => { setImage(e.target.files[0]) }} />
+          <FormLabel>Upload Post Image</FormLabel>
+          <FormLabel htmlFor='upload' className='uploads' mb='5'>
+            <Box className='span'>
+              <FaImage className='icon' />
+              <span>Upload Image</span>
+            </Box>
+            <Input type='file' onChange={(e) => { setImage(e.target.files[0]) }} display='none' id='upload' />
+          </FormLabel>
 
           <FormLabel>Author Name</FormLabel>
           <Input type='text' mb='5' value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
@@ -99,10 +109,10 @@ const CreatePost = () => {
           </Select>
 
           <FormLabel>Post Content</FormLabel>
-          <Textarea mb='5' h='15' value={content} onChange={(e) => setContent(e.target.value)} />
+          <ReactQuill theme='snow' value={content} onChange={setContent} />
         </FormControl>
 
-        <Button type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit}>Publish</Button>
+        <Button type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit} mt='2'>Publish</Button>
       </Box>
     </Container>
   )

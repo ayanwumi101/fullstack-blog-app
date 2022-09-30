@@ -5,6 +5,8 @@ import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, getDocs, deleteDoc, doc, onSnapshot, updateDoc} from 'firebase/firestore'
 import {EditIcon, DeleteIcon} from '@chakra-ui/icons'
 import './modal.css'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const Posts = () => {
   const [posts, setPosts] = useState([])
@@ -147,7 +149,7 @@ const Posts = () => {
                       </Select>
 
                       <FormLabel>Post Content</FormLabel>
-                      <Textarea value={content} placeholder={newData ? newData.post_content : ''} onChange={(e) => setContent(e.target.value)}></Textarea>
+                      <ReactQuill value={content} placeholder={newData ? newData.post_content : ''} onChange={setContent} />
 
                       <Button mr='9' size='sm' w='100px' mt='3' onClick={() => setShowModal(false)}>Cancel</Button>
                       <Button size='sm' colorScheme={'teal'} w='100px' mt='3' float='right' textAlign={'right'} onClick={updatePost} id={ newData ? newData.id : ''}>Update Post</Button>

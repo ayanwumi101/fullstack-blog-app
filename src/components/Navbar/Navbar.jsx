@@ -103,8 +103,20 @@ const Navbar = () => {
                             </MenuButton>
 
                             <MenuList zIndex={'overlay'}>
-                                    { currentUser.email === "admin@gmail.com" && <><Link to='/create_post'><MenuItem variant={'solid'} ><AddIcon mr='2' color={'whatsapp.700'} /> Create Post</MenuItem></Link>
-                                    <Link to='/posts'><MenuItem><DragHandleIcon mr='2' color={'whatsapp.700'} />Posts</MenuItem></Link></>}
+                                    { currentUser.email === "admin@gmail.com" && 
+                                    <>
+                                      <Link to='/create_post'>
+                                        <MenuItem variant={'solid'} >
+                                        <AddIcon mr='2' color={'whatsapp.700'} /> Create Post
+                                        </MenuItem>
+                                      </Link>
+                                      <MenuDivider />
+                                    <Link to='/posts'>
+                                        <MenuItem>
+                                        <DragHandleIcon mr='2' color={'whatsapp.700'} />Posts
+                                        </MenuItem>
+                                    </Link>
+                                    </>}
                                   <MenuDivider />
                                 <Link to='/profile'><MenuItem><CheckCircleIcon mr='2' color={'whatsapp.700'} /> Profile</MenuItem></Link>
                                 <MenuDivider />

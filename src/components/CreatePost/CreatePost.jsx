@@ -27,7 +27,6 @@ const CreatePost = () => {
   const storage = getStorage();
   const doc_id = v4();
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -85,13 +84,14 @@ const CreatePost = () => {
           <Input type='text' placeholder='Title of the post' mb='5' value={title} onChange={(e) => setTitle(e.target.value)} />
 
           <FormLabel>Upload Post Image</FormLabel>
-          <FormLabel htmlFor='upload' className='uploads' mb='5'>
+          <FormLabel htmlFor='upload' className='uploads'>
             <Box className='span'>
               <FaImage className='icon' />
               <span>Upload Image</span>
             </Box>
-            <Input type='file' onChange={(e) => { setImage(e.target.files[0]) }} display='none' id='upload' />
+            <Input type='file' onChange={(e) => setImage(e.target.files[0])} display='none' id='upload' />
           </FormLabel>
+          <Box mb='5' textAlign={'center'}>{image ? image.name : ''}</Box>
 
           <FormLabel>Author Name</FormLabel>
           <Input type='text' mb='5' value={authorName} onChange={(e) => setAuthorName(e.target.value)} />

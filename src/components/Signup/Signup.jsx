@@ -159,7 +159,7 @@ export const Login = () => {
     }
     return(
         <>
-        <Container mt='4'>
+        <Container mt='90px'>
             <Flex textAlign='center'  mb='2' justifyContent={'center'} spacing='-0.95'>
                 <Heading size={'xl'} >Eco</Heading><Heading color='whatsapp.600'size={'xl'}>Scribes</Heading>
             </Flex>

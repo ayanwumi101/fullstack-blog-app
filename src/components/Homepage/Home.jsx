@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {Box, Text, Flex, Heading, Button} from '@chakra-ui/react'
+import {Box, Text, Flex, Heading, Button, Spinner} from '@chakra-ui/react'
 import Card from '../Card/Card'
 import {app} from '../../../firebaseConfig'
 import {getAuth, onAuthStateChanged} from 'firebase/auth'
@@ -23,6 +23,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons'
 const Home = () => {
 
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState([])
   const [postImages, setPostImages] = useState([])
 
@@ -49,7 +50,9 @@ const Home = () => {
           let items = [];
           snapshot.docs.map((doc) => {
           items.push({...doc.data(), id: doc.id});
-          return setPosts(items)});
+            setLoading(false);
+            return setPosts(items);
+          });
         });
       }
     });
@@ -58,6 +61,7 @@ const Home = () => {
       console.log(response);
       response.items.map((item) => {
         getDownloadURL(item).then((url) => {
+          setLoading(false);
           setPostImages((prev) => [...prev, url]);
         })
       })
@@ -67,7 +71,10 @@ const Home = () => {
 
   return (
     <>
-       {user ? <Box><Swiper
+       {user ? 
+       <Box>
+
+        <Swiper
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
@@ -81,14 +88,14 @@ const Home = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        
         {postImages.map((slide, index) => <SwiperSlide key={index}><img src={slide} alt="" /></SwiperSlide> )}
-        
       </Swiper>
       <Box>
-        {<Flex flexWrap={'wrap'} justifyContent='space-between'>
+          {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' ml='50%' mt='20%' color='blue.500' size='lg' /> :
+          <Flex flexWrap={'wrap'} justifyContent='space-between'>
               {posts.map((post) => <Card post={post} key={post.id} /> )}
-        </Flex>}  
+          </Flex>
+        }  
       </Box>
       </Box> : <Box textAlign='center' mt='100px'>
             <Text size={'xl'} mb='5'>Please Login or Create an account to view posts.</Text>

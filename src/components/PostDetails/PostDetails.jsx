@@ -9,8 +9,9 @@ import {getStorage, ref, getDownloadURL, listAll} from 'firebase/storage'
 
 
 const PostDetails = () => {
-  const [posts, setPosts] = useState([]);
-  const [newImage, setNewImage] = useState('')
+  const [post, setPost] = useState();
+  const [newImage, setNewImage] = useState('');
+  const [loading, setLoading] = useState(true);
 
    //initialize firestore
   const db = getFirestore();
@@ -28,53 +29,45 @@ const PostDetails = () => {
       snapshot.docs.map((doc) => {
         items.push({...doc.data(), id: doc.id})
         const newPost = items.find((post) => post.id === id);
-        return setPosts(newPost);
+        return setPost(newPost);
       })
     });
   }, []); 
 
-
-  const getPostImage = async () => {
-    try {
-      const response = await listAll(imageRef);
-      const resp = await response.items;
-      const items = await resp.find((item) => item.name === posts.post_id)
-      const link = await getDownloadURL(items);
-     if(link){
-       setNewImage(link);
-     }
-      console.log(link);
-      console.log(newImage);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
-    // if(posts){
-    //   listAll(imageRef).then((response) => {
-    //     console.log(response.items);
-    //     const photo = response.items.find((item) => item.name === posts.post_id);
-    //     getDownloadURL(photo).then((url) => {
-    //       console.log(url);
-    //       setNewImage(url)
-    //     });
-    //   })
-    // }
-    getPostImage();
-  },[])
-  console.log(posts);
+    const getImage = async () => {
+      await listAll(imageRef).then( async (response) => {
+        console.log(response.items);
+        const photo = response.items.find((item) => item.name === post.post_id);
+        console.log(photo.name, post.post_id);
+        await getDownloadURL(photo).then((url) => {
+            setLoading(false);
+            setNewImage(url);
+        });
+      })
+    };
+
+   if(post){
+    getImage();
+   }
+
+  }, [post]);
+
+  console.log(post);
 
   return (
     <VStack>
-      {posts ?  <><Box>
-        {newImage ? <Image src={newImage && newImage}/> : 'image loading'}
-        {/* {newImage ? <Image src={newImage} /> : <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' />} */}
-      </Box>
-      <Heading size={'md'} textAlign='center' mt='5'>{posts.post_title}</Heading>
-      <Text>{posts.author_name && posts.author_name}</Text>
-      <Text>Category: <ExternalLinkIcon /> {posts.post_category}</Text>
-      <Text p='5' textAlign={'justify'}>{posts.post_content}</Text></> : <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' />}
+      {post ? 
+      <>
+          <Box>
+            {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='50px' /> : <Image src={newImage} />}
+          </Box>
+          <Heading size={'lg'} textAlign='center' mt='5'>{post.post_title}</Heading>
+          <Text>Author: {post.author_name && post.author_name}</Text>
+          <Text>Category: <ExternalLinkIcon /> {post.post_category}</Text>
+          <Text p='5' textAlign={'justify'}>{post.post_content}</Text>
+      </> : 
+          <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='70px' />}
     </VStack>
   )
 }

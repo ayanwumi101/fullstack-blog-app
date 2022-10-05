@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import {Box, Text, Heading, Button, HStack, Flex, Image, Modal, ModalCloseButton, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormControl, FormLabel, Input, Select, useDisclosure, Textarea, useToast, Center} from '@chakra-ui/react'
+import {Box, Text, Heading, Button, HStack, Flex, Image, Modal, ModalCloseButton, Spinner, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormControl, FormLabel, Input, Select, useDisclosure, Textarea, useToast, Center} from '@chakra-ui/react'
 import bimbs from '../../assets/bimbs.jpg';
 import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, getDocs, deleteDoc, doc, onSnapshot, updateDoc} from 'firebase/firestore'
+import {ref, getDownloadURL, listAll, getStorage} from 'firebase/storage'
 import {EditIcon, DeleteIcon} from '@chakra-ui/icons'
 import './modal.css'
 import ReactQuill from 'react-quill'
@@ -18,10 +19,15 @@ const Posts = () => {
   const [authorName, setAuthorName] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [postImage, setPostImage] = useState('');
   
   //initialize firestore
   const db = getFirestore();
-  const toast = useToast()
+  const storage = getStorage();
+  const imageRef = ref(storage, 'post_images');
+
+  const toast = useToast();
 
   //collection reference 
   const colref = collection(db, 'posts');
@@ -31,11 +37,55 @@ const Posts = () => {
       let item = [];
       snapshot.docs.map((doc) => {
         item.push({ ...doc.data(), id: doc.id })
+        setLoading(false)
         return setPosts(item)
       })
       console.log(posts);
-    })
+    });
+
+    console.log(posts.post_id);
+
+    // listAll(imageRef).then((response) => {
+    //   const items = response.items.find((item) => item.name === posts.post_id);
+    //   getDownloadURL(items).then((url) => {
+    //     console.log(url);
+    //     setPostImage(url)
+    //   });
+    // })
+
   }, [])
+
+  useEffect(() => {
+
+    const getImage = async () => {
+      await listAll(imageRef).then(async (response) => {
+        console.log(response.items);
+        const photo = response.items.find((item) => item.name === posts.post_id);
+        console.log(photo.name, posts.post_id);
+        await getDownloadURL(photo).then((url) => {
+          setLoading(false);
+          setPostImage(url);
+        });
+      })
+    };
+
+    if (posts) {
+      getImage();
+    }
+
+  }, []);
+
+  // useEffect(() => {
+  //   listAll(imageRef).then((response) => {
+  //     const items = response.items.find((item) => item.name === posts.post_id);
+  //     getDownloadURL(items).then((url) => {
+  //       console.log(url);
+  //       setPostImage(url)
+  //     });
+  //   })
+
+  // }, []);
+
   
   const deletePost = (e) => {
     const itemId = e.currentTarget.id;
@@ -97,7 +147,8 @@ const Posts = () => {
     <Flex flexDirection={'column'} justifyContent='space-around' alignItems={'center'} mt='3' mb='3' p='3'>
       {posts.map((post) => {
         return(
-            <Flex 
+          <>
+            {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='50px' /> : <Flex 
               flexDirection={'row'} 
               dropShadow={'md'} 
               w='100%' 
@@ -112,7 +163,7 @@ const Posts = () => {
               p='3'
               key={post.id}
             >
-              <Image src={bimbs} h='70px' w='70px' borderRadius={'md'} />
+              <Image src={postImage} h='70px' w='70px' borderRadius={'md'} />
                 <Heading as='h3' size={'sm'}>{post.post_title.substring(0,35)}...</Heading>
                 <Text>Author: {post.author_name}</Text>
                 <Text>Category: {post.post_category}</Text>
@@ -120,7 +171,8 @@ const Posts = () => {
                 <Text>Id: {post.id}</Text>
                 <Button size={'sm'} colorScheme='linkedin' w='40px' onClick={openModal}  id={post.id}><EditIcon/></Button>
             <Button size={'sm'} colorScheme='red' w='40px' onClick={deletePost} id={post.id}><DeleteIcon/></Button>
-            </Flex>
+            </Flex>}
+            </>
           )
       })}
     </Flex>

@@ -60,7 +60,7 @@ const Education = () => {
           <SwiperSlide><img src={second} alt="" /></SwiperSlide>
           <SwiperSlide><img src={third} alt="" /></SwiperSlide>
         </Swiper>
-        <Heading as='h2' size='md' position={'relative'} top='50%' textAlign={'center'} mt='3'>Education</Heading>
+        <Heading as='h2' size='lg' position={'relative'} top='50%' textAlign={'center'} mt='3' textDecoration={'underline'} textShadow='xl'>Educational News</Heading>
         <Box>
           {<Flex flexWrap={'wrap'} justifyContent='space-between'>{education.map((post) => <Card post={post} key={post.id} />)}</Flex>}
         </Box></> : <Box textAlign='center' mt='100px'>

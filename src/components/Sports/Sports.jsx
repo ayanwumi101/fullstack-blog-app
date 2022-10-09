@@ -21,7 +21,7 @@ const Sports = () => {
   const [user, setUser] = useState([])
   const db = getFirestore();
   const colRef = collection(db, 'posts');
-  const q = query(colRef, where('post_category', '==', 'sports' ), );
+  const q = query(colRef, where('post_category', '==', 'Sports' ), );
   const auth = getAuth();
 
   useEffect(() => {
@@ -37,7 +37,9 @@ const Sports = () => {
       setUser(user)
     })
     
-  }, [])
+  }, []);
+
+  console.log(sports);
 
   return (
     <>
@@ -60,7 +62,7 @@ const Sports = () => {
         <SwiperSlide><img src={second} alt="" /></SwiperSlide>
         <SwiperSlide><img src={third} alt="" /></SwiperSlide>
       </Swiper>
-      <Heading as='h2' size='md' position={'relative'} top='50%' textAlign={'center'} mt='3'>Sports</Heading>
+      <Heading as='h2' size='lg' position={'relative'} top='50%' textAlign={'center'} mt='3' textDecoration={'underline'}>Sports News</Heading>
     <Box>
       {<Flex flexWrap={'wrap'} justifyContent='space-between'>{sports.map((post) => <Card post={post} key={post.id} />)}</Flex>}
         </Box></> : <Box textAlign='center' mt='100px'>

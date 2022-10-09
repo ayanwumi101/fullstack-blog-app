@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {Box, Text, Flex, Heading, Button, Spinner} from '@chakra-ui/react'
+import {Box, Text, Flex, Heading, Button, Spinner, Image} from '@chakra-ui/react'
 import Card from '../Card/Card'
 import {app} from '../../../firebaseConfig'
 import {getAuth, onAuthStateChanged} from 'firebase/auth'
@@ -18,6 +18,7 @@ import third from '../../assets/test.png'
 import fourth from '../../assets/blog1.png'
 import fifth from '../../assets/blog3.png'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
+import '../Posts/modal.css'
 
 
 const Home = () => {
@@ -35,7 +36,7 @@ const Home = () => {
 
   //get firestore storage
   const storage = getStorage();
-  const imagesRef = ref(storage, 'images');
+  const imagesRef = ref(storage, 'post_images');
 
   //collection reference 
   const colref = collection(db, 'posts');
@@ -74,9 +75,7 @@ const Home = () => {
        {user ? 
        <Box>
 
-        <Swiper
-        spaceBetween={30}
-        centeredSlides={true}
+        <Swiper spaceBetween={30} centeredSlides={true} 
         autoplay={{
           delay: 2500,
           disableOnInteraction: false,
@@ -88,9 +87,11 @@ const Home = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        {postImages.map((slide, index) => <SwiperSlide key={index}><img src={slide} alt="" /></SwiperSlide> )}
+        {postImages.map((slide, index) => <SwiperSlide key={index}><Image src={slide} alt="" className='post_images' /></SwiperSlide> )}
       </Swiper>
       <Box>
+          <Heading textAlign={'center'} mt='5' mb='3'>EcoScribes' News</Heading>
+          <Text textAlign={'center'} mb='5' fontSize={'lg'}>Find the latest News and gist for different categories and from different parts of the world.</Text>
           {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' ml='50%' mt='20%' color='blue.500' size='lg' /> :
           <Flex flexWrap={'wrap'} justifyContent='space-between'>
               {posts.map((post) => <Card post={post} key={post.id} /> )}

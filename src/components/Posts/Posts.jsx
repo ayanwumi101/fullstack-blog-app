@@ -36,55 +36,33 @@ const Posts = () => {
     onSnapshot(colref, (snapshot) => {
       let item = [];
       snapshot.docs.map((doc) => {
-        item.push({ ...doc.data(), id: doc.id })
+        item.push({ ...doc.data(), id: doc.id });
         setLoading(false)
-        return setPosts(item)
+        return setPosts(item);
       })
       console.log(posts);
     });
-
-    console.log(posts.post_id);
-
-    // listAll(imageRef).then((response) => {
-    //   const items = response.items.find((item) => item.name === posts.post_id);
-    //   getDownloadURL(items).then((url) => {
-    //     console.log(url);
-    //     setPostImage(url)
-    //   });
-    // })
-
   }, [])
 
+
+ 
   useEffect(() => {
-
-    const getImage = async () => {
-      await listAll(imageRef).then(async (response) => {
-        console.log(response.items);
-        const photo = response.items.find((item) => item.name === posts.post_id);
-        console.log(photo.name, posts.post_id);
-        await getDownloadURL(photo).then((url) => {
-          setLoading(false);
-          setPostImage(url);
-        });
-      })
-    };
-
-    if (posts) {
-      getImage();
+    const fetchImage = async () => {
+        await listAll(imageRef).then(async (response) => {
+          console.log(response.items);
+          const photo = response.items.filter((item) => item.name === posts.post_id);
+          console.log(photo, posts.post_id);
+          await getDownloadURL(photo).then((url) => {
+            console.log(url);
+          })
+        })
     }
-
+  
+    if(posts){
+      fetchImage();
+    }
+    
   }, []);
-
-  // useEffect(() => {
-  //   listAll(imageRef).then((response) => {
-  //     const items = response.items.find((item) => item.name === posts.post_id);
-  //     getDownloadURL(items).then((url) => {
-  //       console.log(url);
-  //       setPostImage(url)
-  //     });
-  //   })
-
-  // }, []);
 
   
   const deletePost = (e) => {

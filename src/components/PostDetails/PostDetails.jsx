@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import {Box, VStack, Text, Button, Image, Heading, Container, Spinner} from '@chakra-ui/react'
-import {ExternalLinkIcon} from '@chakra-ui/icons'
-import {useParams} from 'react-router-dom'
+import {ExternalLinkIcon, ArrowBackIcon} from '@chakra-ui/icons'
+import {useParams, Link} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, getDocs,} from 'firebase/firestore'
 import test from '../../assets/CODE.png'
 import {getStorage, ref, getDownloadURL, listAll} from 'firebase/storage'
+import '../Posts/modal.css'
 
 
 const PostDetails = () => {
@@ -60,12 +61,14 @@ const PostDetails = () => {
       {post ? 
       <>
           <Box>
-            {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='50px' /> : <Image src={newImage} />}
+            {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='50px' /> : <Image src={newImage} className='post_images' mb='5' />}
           </Box>
-          <Heading size={'lg'} textAlign='center' mt='5'>{post.post_title}</Heading>
-          <Text>Author: {post.author_name && post.author_name}</Text>
-          <Text>Category: <ExternalLinkIcon /> {post.post_category}</Text>
-          <Text p='5' textAlign={'justify'}>{post.post_content}</Text>
+          <Heading size={'lg'} textAlign='center' mt='5' textDecoration={'underline'}>{post.post_title}</Heading>
+          <Text>Author: <strong>{post.author_name && post.author_name}</strong></Text>
+          <Text>Category: <ExternalLinkIcon /> <strong>{post.post_category}</strong></Text>
+          <Text> Date Posted: <strong>{post.date}</strong></Text>
+          <Text p='5' textAlign={'justify'} lineHeight='tall'>{post.post_content}</Text>
+          <Link to='/home'><Button colorScheme={'teal'} size='sm' mb='5'> <ArrowBackIcon mr='1' />Go back</Button></Link>
       </> : 
           <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='70px' />}
     </VStack>

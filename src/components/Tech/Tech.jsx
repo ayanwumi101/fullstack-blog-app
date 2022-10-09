@@ -21,7 +21,7 @@ const Tech = () => {
   const [user, setUser] = useState([])
   const db = getFirestore();
   const colRef = collection(db, 'posts');
-  const q = query(colRef, where('post_category', '==', 'tech'),)
+  const q = query(colRef, where('post_category', '==', 'Tech'),)
   const auth = getAuth();
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const Tech = () => {
             <SwiperSlide><img src={second} alt="" /></SwiperSlide>
             <SwiperSlide><img src={third} alt="" /></SwiperSlide>
           </Swiper>
-          <Heading as='h2' size='md' position={'relative'} top='50%' textAlign={'center'} mt='3'>Tech</Heading>
+          <Heading as='h2' size='lg' position={'relative'} top='50%' textAlign={'center'} mt='3' textDecoration={'underline'}>Tech News</Heading>
           <Box>
             {<Flex flexWrap={'wrap'} justifyContent='space-between'>{tech.map((post) => <Card post={post} key={post.id} />)}</Flex>}
           </Box></> : <Box textAlign='center' mt='100px'>

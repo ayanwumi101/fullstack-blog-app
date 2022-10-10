@@ -47,7 +47,7 @@ const Profile = () => {
             <Box maxW={'400px'}>
               <HStack mb='4' spacing={'3'}>
               <Text>Username:</Text>
-              <Heading size='sm'>Ayanwumi Abdulroheem Tunde</Heading>
+              <Heading size='sm'>dev_cody</Heading>
             </HStack>
             <HStack mb='4' spacing={'3'}>
               <Text>Email:</Text>

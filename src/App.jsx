@@ -45,7 +45,6 @@ function App() {
             <Route exact ='/edit/:id' element={<EditPost />} />
           </Routes>
       </Router>
-     
     </div>
   )
 }

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Box, Avatar, AvatarBadge, Heading, Text, HStack, Container, Button } from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
 import {getAuth} from 'firebase/auth'
-import {getDoc, doc, getFirestore} from 'firebase/firestore'
+import {getFirestore, query, where, getDocs, collection, getDoc, doc} from 'firebase/firestore'
 import {getStorage, ref, getDownloadURL} from 'firebase/storage'
 import { Link } from 'react-router-dom'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
@@ -10,44 +10,58 @@ import { ExternalLinkIcon } from '@chakra-ui/icons'
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState([]);
-  const [bio, setBio] = useState([])
+  const [userBio, setUserBio] = useState()
   const [avatar, setAvatar] = useState('');
   const auth = getAuth();
+
 
   //init firebase storage
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-        setUserProfile(user)   
-        if(user){
-            const db = getFirestore();
-            const storage = getStorage();
-            const avatarRef = ref(storage,user.uid);
-            const docRef = doc(db, "user_info", user.uid);
+        setUserProfile(user);
+        const db = getFirestore();
+        const storage = getStorage();
+        const avatarRef = ref(storage, user.uid);
+        const userRef = collection(db, 'userData');
+        const q = query(userRef, where('user_id', '==', user.uid));  
+        
+      const getBio = async () => {
+        await getDocs(q).then(async (snapshot) => {
+          let user_data = [];
+          snapshot.docs.map((item) => {
+            user_data.push({ ...item.data(), id: item.id });
+            return setUserBio(user_data);
+          })
+        });
+      }
 
+        if(user){
             getDownloadURL(avatarRef).then((url) => {
               setAvatar(url);
             });
-
-            getDoc(docRef).then((doc) => {
-              console.log(doc.data());
-            });
+          getBio();
         }
     });
-  }, [])
+  }, []);
+
 
   return (
     <>
-        {userProfile ? <Box maxW={'400px'} p='3' margin={'auto'} mt='4'>
+        {userProfile ? <Box maxW={'350px'} p='3' margin={'auto'} mt='4'>
             <Box textAlign={'center'} mb='9'>
               <Avatar size='xl' src={avatar}>
                 <AvatarBadge bg='green.500' boxSize='7' />
               </Avatar>
             </Box>
 
-            <Box maxW={'400px'}>
-              <HStack mb='4' spacing={'3'}>
+          <Box maxW={'350px'}>
+            <HStack mb='4' spacing={'3'}>
               <Text>Username:</Text>
-              <Heading size='sm'>dev_cody</Heading>
+            <Heading size='sm'>{userBio ? userBio[0].user_name : ''}</Heading>
+            </HStack>
+            <HStack mb='4' spacing={'3'}>
+              <Text>Bio:</Text>
+              <Heading size='sm'>{userBio ? userBio[0].user_bio : ''}</Heading>
             </HStack>
             <HStack mb='4' spacing={'3'}>
               <Text>Email:</Text>
@@ -65,11 +79,7 @@ const Profile = () => {
               <Text>Verification Status:</Text>
               <Heading size='sm'>Unverified</Heading>
             </HStack>
-            {/* <HStack mb='4' spacing={'3'}>
-              <Text>Signup Date:</Text>
-              <Heading size='sm'>{userProfile.metadata.creationTime}</Heading>
-            </HStack> */}
-            </Box>
+          </Box>
           
         </Box> : <Box textAlign='center' mt='100px'>
           <Text size={'xl'} mb='5'>Please Login or Create an account to view your profile.</Text>

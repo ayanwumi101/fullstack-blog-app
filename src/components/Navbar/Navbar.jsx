@@ -37,7 +37,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
 
-  const Links = ['Sports', 'Tech', 'Education', 'Politics', 'About', 'Teams', 'Contact'];
+  const Links = ['Sports', 'Tech', 'Education', 'Politics', 'About', 'Team', 'Contact'];
   const NavLink = ({children}, {children: ReactNode}) => (
       <Link px={2} py={1} rounded={'md'} _hover={{textDecoration: 'none', border: 'none', outline: 'none', bg: useColorModeValue('grey.200', 'grey.700')}} to={'/'+ children} onClick={onClose}>
           {children}

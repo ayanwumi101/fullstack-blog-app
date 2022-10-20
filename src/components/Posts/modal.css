@@ -107,6 +107,11 @@ hr {
     height: 650px;
 }
 
+.social-icons{
+    font-size: 25px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
 /* Change styles for cancel button and delete button on extra small screens */
 @media screen and (max-width: 700px) {
     .cancelbtn,

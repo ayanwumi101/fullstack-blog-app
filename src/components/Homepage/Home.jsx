@@ -11,12 +11,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
-import bimb from '../../assets/bimbs.jpg'
-import first from '../../assets/CODE.png'
-import second from '../../assets/CODES.png'
-import third from '../../assets/test.png'
-import fourth from '../../assets/blog1.png'
-import fifth from '../../assets/blog3.png'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import '../Posts/modal.css'
 
@@ -90,12 +84,14 @@ const Home = () => {
         {postImages.map((slide, index) => <SwiperSlide key={index}><Image src={slide} alt="" className='post_images' /></SwiperSlide> )}
       </Swiper>
       <Box>
-          <Heading textAlign={'center'} mt='5' mb='3'>EcoScribes' News</Heading>
-          <Text textAlign={'center'} mb='5' fontSize={'lg'}>Find the latest News and gist for different categories and from different parts of the world.</Text>
-          {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' ml='50%' mt='20%' color='blue.500' size='lg' /> :
-          <Flex flexWrap={'wrap'} justifyContent='space-between'>
-              {posts.map((post) => <Card post={post} key={post.id} /> )}
-          </Flex>
+          {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' ml='50%' mt='17%' color='blue.500' size='lg' /> :
+          <>
+            <Heading textAlign={'center'} mt='5' mb='3'>EcoScribes' News</Heading>
+            <Text textAlign={'center'} mb='5' fontSize={'lg'}>Find the latest News and gist for different categories and from different parts of the world.</Text>
+            <Flex flexWrap={'wrap'} justifyContent='space-between'>
+                {posts.map((post) => <Card post={post} key={post.id} /> )}
+            </Flex>
+          </>
         }  
       </Box>
       </Box> : <Box textAlign='center' mt='100px'>

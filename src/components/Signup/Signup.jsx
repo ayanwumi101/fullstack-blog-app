@@ -22,6 +22,7 @@ const Signup = () => {
 
     const auth = getAuth();
     const db = getFirestore();
+    const userRef = collection(db, 'userData');
     const storage = getStorage();  
 
     useEffect(() => {
@@ -34,12 +35,17 @@ const Signup = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(userName && email && password && avatar && bio){
-            
 
             createUserWithEmailAndPassword(auth, email, password).then((cred) => {
                 const avatarRef = ref(storage, cred.user.uid);
                 uploadBytes(avatarRef, avatar).then(() => {
                     console.log('avatar uploaded');
+                });
+
+                addDoc(userRef, {
+                    user_bio: bio,
+                    user_name: userName,
+                    user_id: cred.user.uid,
                 });
                 console.log('user created', cred.user.uid);
             })
@@ -84,13 +90,14 @@ const Signup = () => {
         <Heading textAlign='center' mb='4' size={'lg'} mt='6'>Signup</Heading>
         <FormControl maxWidth='450px' textAlign={'left'} isRequired>
 
-            <Flex justifyContent={'center'} alignItems='center' margin={'auto'} mb='5' position={'relative'} maxW='150px'>
+            <Flex justifyContent={'center'} alignItems='center' margin={'auto'} mb='4' position={'relative'} maxW='150px'>
                 <Avatar src='' name={userName} size='xl' />
                 <FormLabel htmlFor='avatar' position={'absolute'} bottom='-38px' right='15px'>
-                  <BsCameraFill style={{width: '30px', height: '30px'}} />
+                  <BsCameraFill style={{width: '30px', height: '30px'}} color='rgba(0,0,0,0.4)' />
                   <Input type='file' onChange={(e) => setAvatar(e.target.files[0])} mb='5' id='avatar' display={'none'} />
                 </FormLabel>
             </Flex>
+            <Text textAlign={'center'} mb='5'>{avatar ? avatar.name : ''}</Text>
 
             <FormLabel>Username</FormLabel>
             <Input type='text' placeholder='input your username' mb='5'  maxWidth='450px' value={userName} onChange={(e) => setUserName(e.target.value)} />
@@ -104,7 +111,7 @@ const Signup = () => {
             <FormLabel>Password</FormLabel>
             <Input type='password' placeholder='input your password'  maxWidth='450px' mb='5' value={password} onChange={(e) => setPassword(e.target.value)} />
 
-            <Button colorScheme='twitter' size='sm' type='submit' onClick={handleSubmit}>Signup</Button>
+            <Button colorScheme='twitter' size='sm' type='submit' onClick={handleSubmit} w='100%' outline={'none'}>Signup</Button>
 
         </FormControl>
         <Text textAlign={'left'} >Already have an account? <Link to='/login'>Sign in</Link> </Text>
@@ -170,7 +177,7 @@ export const Login = () => {
                     <Input type='email' placeholder='Please input your email' maxWidth='400px' mb='5' value={email} onChange={(e) => setEmail(e.target.value)} />
                      <FormLabel>Password</FormLabel>
                     <Input type='password' placeholder='Please input your password' mb='5' maxWidth='400px' value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <Button colorScheme='twitter' size='sm' onClick={handleLogin}>Login</Button>
+                    <Button colorScheme='twitter' size='sm' onClick={handleLogin} w='100%'>Login</Button>
                 </FormControl>
 
                 <Text textAlign={'left'} >Don't have an account? <Link to='/signup'>Create account</Link> </Text>

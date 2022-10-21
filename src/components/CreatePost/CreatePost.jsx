@@ -133,7 +133,7 @@ const CreatePost = () => {
           <ReactQuill theme='snow' modules={modules} dangerouslySetInnerHTML={{__html: content}} onChange={setContent} />
         </FormControl>
 
-        <Button w='100%' mt='5' type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit}>{loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='sm' /> : 'Publish'}</Button>
+        <Button w='100%' mt='5' type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit}>{loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='md' /> : 'Publish'}</Button>
       </Box>
     </Container>
   )

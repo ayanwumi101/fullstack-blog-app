@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Box, Heading, Text, FormControl, FormLabel, Input, Button, Stack, useToast, Flex, Container, Avatar} from '@chakra-ui/react'
+import {Box, Heading, Text, FormControl, FormLabel, Input, Button, Stack, useToast, Flex, Container, Avatar, Spinner} from '@chakra-ui/react'
 import {BsCameraFill} from 'react-icons/bs'
 import {app} from '../../../firebaseConfig'
 import {getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth'
@@ -18,6 +18,7 @@ const Signup = () => {
     const navigate = useNavigate();
     const [avatar, setAvatar] = useState(null);
     const [user, setUser] = useState([]);
+    const [loading, setLoading] = useState(false)
 
 
     const auth = getAuth();
@@ -35,7 +36,6 @@ const Signup = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(userName && email && password && avatar && bio){
-
             createUserWithEmailAndPassword(auth, email, password).then((cred) => {
                 const avatarRef = ref(storage, cred.user.uid);
                 uploadBytes(avatarRef, avatar).then(() => {
@@ -48,6 +48,7 @@ const Signup = () => {
                     user_id: cred.user.uid,
                 });
                 console.log('user created', cred.user.uid);
+                setLoading(true);
             })
             .then(() => {
                 
@@ -111,7 +112,7 @@ const Signup = () => {
             <FormLabel>Password</FormLabel>
             <Input type='password' placeholder='input your password'  maxWidth='450px' mb='5' value={password} onChange={(e) => setPassword(e.target.value)} />
 
-            <Button colorScheme='twitter' size='sm' type='submit' onClick={handleSubmit} w='100%' outline={'none'}>Signup</Button>
+                  <Button colorScheme='twitter' size='sm' type='submit' onClick={handleSubmit} w='100%' outline={'none'}>{loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='md' /> : 'Signup'}</Button>
 
         </FormControl>
         <Text textAlign={'left'} >Already have an account? <Link to='/login'>Sign in</Link> </Text>
@@ -128,6 +129,7 @@ export const Login = () => {
     const [password, setPassword] = useState('admin123');
     const toast = useToast();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const auth = getAuth();
 
@@ -145,6 +147,7 @@ export const Login = () => {
                 setEmail('');
                 setPassword('');
                 navigate('/home');
+                setLoading(true);
             }).catch((err) => {
                 toast({
                     title: "User doesn't exist", 
@@ -177,7 +180,7 @@ export const Login = () => {
                     <Input type='email' placeholder='Please input your email' maxWidth='400px' mb='5' value={email} onChange={(e) => setEmail(e.target.value)} />
                      <FormLabel>Password</FormLabel>
                     <Input type='password' placeholder='Please input your password' mb='5' maxWidth='400px' value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <Button colorScheme='twitter' size='sm' onClick={handleLogin} w='100%'>Login</Button>
+                        <Button colorScheme='twitter' size='sm' onClick={handleLogin} w='100%'>{loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='md' /> : 'Login'}</Button>
                 </FormControl>
 
                 <Text textAlign={'left'} >Don't have an account? <Link to='/signup'>Create account</Link> </Text>

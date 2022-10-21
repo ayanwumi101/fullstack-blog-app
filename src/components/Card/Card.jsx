@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Box, Text, Heading, Button, HStack, Flex, Image, Container, SkeletonCircle, SkeletonText} from '@chakra-ui/react'
+import {Box, Text, Heading, Button, HStack, Flex, Image, SkeletonCircle, SkeletonText} from '@chakra-ui/react'
 import bimbs from '../../assets/bimbs.jpg';
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {Link} from 'react-router-dom'
@@ -39,10 +39,10 @@ const Card = ({post}) => {
             <Box dropShadow={'md'} w='285px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='10'>
                 <Image src={newImage} h='250px' w='100%' height={'200px'} borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
                 <Box p='3'>
-                    <Heading as='h3' size={'md'} textAlign='center'>{post_title}</Heading>
-                    <Box dangerouslySetInnerHTML={{ __html: post_content.substring(0, 80) + ' ......' }} mt='3' mb='3' textAlign={'justify'} p='3'></Box>   
+                    <Heading as='h3' size={'md'} textAlign='center' textTransform={'capitalize'}>{post_title}</Heading>
+                    <Box dangerouslySetInnerHTML={{ __html: post_content.substring(0, 80) + ' ......' }} mt='2' mb='2' textAlign={'justify'} p='1' fontSize={'sm'}></Box>   
                     <Flex justifyContent={'space-between'} alignItems='center' mb='4'>
-                        <Text fontWeight={'semibold'}>By: {author_name}</Text>
+                        <Text fontWeight={'semibold'}>{author_name}</Text>
                         <Text fontWeight={'semibold'}>{post_category} <ExternalLinkIcon /> </Text>
                     </Flex>
                     <Link to={`/posts/${id}`}><Button size={'sm'} w='100%' textAlign={'center'} colorScheme='teal'>Read more</Button></Link>

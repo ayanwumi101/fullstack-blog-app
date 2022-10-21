@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Heading, FormControl, Input, FormLabel, Button, Select, useToast, Container } from '@chakra-ui/react'
+import { Box, Heading, FormControl, Input, FormLabel, Button, Select, useToast, Container, Spinner } from '@chakra-ui/react'
 import { FaImage } from 'react-icons/fa'
 import { app } from '../../../firebaseConfig'
 import { getFirestore, collection, addDoc, serverTimestamp} from 'firebase/firestore'
@@ -133,7 +133,7 @@ const CreatePost = () => {
           <ReactQuill theme='snow' modules={modules} dangerouslySetInnerHTML={{__html: content}} onChange={setContent} />
         </FormControl>
 
-        <Button type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit} mt='2'>{loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='sm' /> : 'Publish'}</Button>
+        <Button w='100%' mt='4' type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit} mt='2'>{loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='sm' /> : 'Publish'}</Button>
       </Box>
     </Container>
   )

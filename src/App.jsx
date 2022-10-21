@@ -17,10 +17,7 @@ import Profile from './components/Profile/Profile'
 import EditPost from './components/EditPost/EditPost'
 import Posts from './components/Posts/Posts'
 
-
-
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <div className="App">

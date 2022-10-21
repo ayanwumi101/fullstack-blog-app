@@ -15,13 +15,14 @@ import {
     useColorModeValue, 
     Stack, 
     Heading, 
-    AvatarBadge,FormControl, Input, FormLabel, Textarea, Select, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,} from '@chakra-ui/react'
+    AvatarBadge,Text, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,} from '@chakra-ui/react'
 import {Link} from 'react-router-dom'
 import {HamburgerIcon, CloseIcon, AddIcon, CheckCircleIcon, ExternalLinkIcon, DragHandleIcon} from '@chakra-ui/icons'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
 import {signOut, getAuth} from 'firebase/auth'
 import {getStorage, getDownloadURL, ref} from 'firebase/storage'
+import {getFirestore, query, where, getDocs, collection, } from 'firebase/firestore'
 
 
 
@@ -29,6 +30,7 @@ const Navbar = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [currentUser, setCurrentUser] = useState([]);
+  const [userName, setUserName] = useState();
   const [photoUrl, setPhotoUrl] = useState('')
   const toast = useToast();
   const location = useLocation();
@@ -47,15 +49,33 @@ const Navbar = () => {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
         setCurrentUser(user);
+        const db = getFirestore();
+        const userRef = collection(db, 'userData');
+        const q = query(userRef, where('user_id', '==', user.uid));
+
+        const getUsername = async () => {
+            await getDocs(q).then(async (snapshot) => {
+                let user_data = [];
+                snapshot.docs.map((item) => {
+                    console.log(item);
+                    user_data.push({...item.data(), id: item.id});
+                    return setUserName(user_data);
+                })
+            })
+            console.log(userName);
+        };
+
         if(user){
             const imageRef = ref(storage, user.uid);
-            getDownloadURL(imageRef).then((url) => {
-                setPhotoUrl(url);
-            });
+                getDownloadURL(imageRef).then((url) => {
+                    setPhotoUrl(url);
+                });
+            getUsername();
         }
         
     })
   }, [])
+  console.log(userName);
 
 
   const handleLogout = () => {
@@ -96,7 +116,8 @@ const Navbar = () => {
 
                     <Menu>
                        {currentUser && <>  
-                            <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                       <Text mr='2' fontWeight={'bold'} textTransform='capitalize' display={{base: 'none', md: 'block', lg: 'block'}}>{userName ? userName[0].user_name : ''}</Text>
+                            <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} border='none' outline='none'>
                                 <Avatar src={photoUrl} size={'sm'} >
                                     <AvatarBadge bg='green.500' boxSize='1.25em' />
                                 </Avatar>

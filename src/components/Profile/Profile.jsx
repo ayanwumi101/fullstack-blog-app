@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Box, Avatar, AvatarBadge, Heading, Text, HStack, Container, Button } from '@chakra-ui/react'
 import {app} from '../../../firebaseConfig'
 import {getAuth} from 'firebase/auth'
-import {getFirestore, query, where, getDocs, collection, getDoc, doc} from 'firebase/firestore'
+import {getFirestore, query, where, getDocs, collection} from 'firebase/firestore'
 import {getStorage, ref, getDownloadURL} from 'firebase/storage'
 import { Link } from 'react-router-dom'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
@@ -56,28 +56,28 @@ const Profile = () => {
 
           <Box maxW={'350px'}>
             <HStack mb='4' spacing={'3'}>
-              <Text>Username:</Text>
-            <Heading size='sm'>{userBio ? userBio[0].user_name : ''}</Heading>
+              <Text fontWeight={'medium'}>Username:</Text>
+            <Text>{userBio ? userBio[0].user_name : ''}</Text>
             </HStack>
             <HStack mb='4' spacing={'3'}>
-              <Text>Bio:</Text>
-              <Heading size='sm'>{userBio ? userBio[0].user_bio : ''}</Heading>
+              <Text fontWeight={'medium'}>Bio:</Text>
+              <Text size='sm'>{userBio ? userBio[0].user_bio : ''}</Text>
+            </HStack>
+             <HStack mb='4' spacing={'3'}>
+              <Text fontWeight={'medium'}>Status: </Text>
+              <Text size='sm'>Online</Text>
             </HStack>
             <HStack mb='4' spacing={'3'}>
-              <Text>Email:</Text>
-              <Heading size='sm'>{userProfile.email}</Heading>
+              <Text fontWeight={'medium'}>Email:</Text>
+              <Text size='sm'>{userProfile.email}</Text>
             </HStack>
             <HStack mb='4' spacing={'3'}>
-              <Text>Membership Status:</Text>
-              <Heading size='sm'>User</Heading>
+              <Text fontWeight={'medium'}>Membership Status:</Text>
+              <Text size='sm'>User</Text>
             </HStack>
             <HStack mb='4' spacing={'3'}>
-              <Text>Status: </Text>
-              <Heading size='sm'>Online</Heading>
-            </HStack>
-            <HStack mb='4' spacing={'3'}>
-              <Text>Verification Status:</Text>
-              <Heading size='sm'>Unverified</Heading>
+              <Text fontWeight={'medium'}>Verification Status:</Text>
+              <Text size='sm'>Unverified</Text>
             </HStack>
           </Box>
           

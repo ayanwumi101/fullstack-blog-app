@@ -36,11 +36,11 @@ const Card = ({post}) => {
   return (
     <>
         <Flex flexWrap={'wrap'} justifyContent='space-around' alignItems='flex-start' margin='auto' mt='6' mb='2'>
-            <Box dropShadow={'md'} w='300px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='10'>
+            <Box dropShadow={'md'} w='285px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='10'>
                 <Image src={newImage} h='250px' w='100%' height={'200px'} borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
                 <Box p='3'>
                     <Heading as='h3' size={'md'} textAlign='center'>{post_title}</Heading>
-                    <Box dangerouslySetInnerHTML={{ __html: post_content.substring(0, 300) + ' ......' }} mt='3' mb='3' textAlign={'justify'} p='3'></Box>   
+                    <Box dangerouslySetInnerHTML={{ __html: post_content.substring(0, 80) + ' ......' }} mt='3' mb='3' textAlign={'justify'} p='3'></Box>   
                     <Flex justifyContent={'space-between'} alignItems='center' mb='4'>
                         <Text fontWeight={'semibold'}>By: {author_name}</Text>
                         <Text fontWeight={'semibold'}>{post_category} <ExternalLinkIcon /> </Text>

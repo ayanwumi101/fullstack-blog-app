@@ -29,38 +29,65 @@ const Posts = () => {
 
   const toast = useToast();
 
+  //Reactquill plugin modules start here
+  const modules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
+
+
   //collection reference 
   const colref = collection(db, 'posts');
 
   useEffect(() => {
-    onSnapshot(colref, (snapshot) => {
+    getDocs(colref).then((snapshot) => {
+      console.log(snapshot.docs);
       let item = [];
       snapshot.docs.map((doc) => {
-        item.push({ ...doc.data(), id: doc.id });
-        setLoading(false)
+        item.push({...doc.data(), id: doc.id});
+        setLoading(false);
         return setPosts(item);
       })
       console.log(posts);
-    });
-  }, [])
+    })
+    // onSnapshot(colref, (snapshot) => {
+    //   let item = [];
+    //   snapshot.docs.map((doc) => {
+    //     item.push({ ...doc.data(), id: doc.id });
+    //     setLoading(false)
+    //     return setPosts(item);
+    //   })
+    //   console.log(posts);
+    // });
+    }, [])
 
 
  
   useEffect(() => {
-    const fetchImage = async () => {
-        await listAll(imageRef).then(async (response) => {
-          console.log(response.items);
-          const photo = response.items.filter((item) => item.name === posts.post_id);
-          console.log(photo, posts.post_id);
-          await getDownloadURL(photo).then((url) => {
-            console.log(url);
-          })
-        })
-    }
+    // const fetchImage = async () => {
+    //     await listAll(imageRef).then(async (response) => {
+    //       console.log(response.items);
+    //       const photo = response.items.filter((item) => item.name === posts.post_id);
+    //       console.log(photo, posts.post_id);
+    //       await getDownloadURL(photo).then((url) => {
+    //         console.log(url);
+    //       })
+    //     })
+    // }
   
-    if(posts){
-      fetchImage();
-    }
+    // if(posts){
+    //   fetchImage();
+    // }
     
   }, []);
 
@@ -88,12 +115,12 @@ const Posts = () => {
     const itemId = e.target.id;
     const newItem = posts.find((item) => item.id === itemId);
     setNewData(newItem);
-    console.log(newData);
-    
+    console.log(newItem);
+    console.log(newData); 
   }
 
   const updatePost = (e) => {
-    const itemId = e.currentTarget.id;
+    const itemId = e.target.id;
     const docRef = doc(db, 'posts', itemId);
     updateDoc(docRef, {
       post_title: title,
@@ -179,7 +206,9 @@ const Posts = () => {
                       </Select>
 
                       <FormLabel>Post Content</FormLabel>
-                      <ReactQuill value={content} placeholder={newData ? newData.post_content : ''} onChange={setContent} />
+                      <Box overflow={'auto'}>
+                        <ReactQuill modules={modules} placeholder={newData ? newData.post_content : ''} onChange={setContent} dangerouslySetInnerHTML={{__html: content}} />
+                      </Box>
 
                       <Button mr='9' size='sm' w='100px' mt='3' onClick={() => setShowModal(false)}>Cancel</Button>
                       <Button size='sm' colorScheme={'teal'} w='100px' mt='3' float='right' textAlign={'right'} onClick={updatePost} id={ newData ? newData.id : ''}>Update Post</Button>

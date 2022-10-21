@@ -68,22 +68,22 @@ const Home = () => {
     <>
        {user ? 
        <Box>
-
-        <Swiper spaceBetween={30} centeredSlides={true} 
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
-      >
-        {postImages.map((slide, index) => <SwiperSlide key={index}><Image src={slide} alt="" className='post_images' /></SwiperSlide> )}
-      </Swiper>
-      <Box>
+          {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' ml='50%' mt='7%' color='blue.500' size='lg' /> :
+            <Swiper spaceBetween={30} centeredSlides={true}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              modules={[Autoplay, Pagination, Navigation]}
+              className="mySwiper"
+            >
+              {postImages.map((slide, index) => <SwiperSlide key={index}><Image src={slide} alt="" className='post_images' /></SwiperSlide>)}
+            </Swiper>}
+       <Box>
           {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' ml='50%' mt='17%' color='blue.500' size='lg' /> :
           <>
             <Heading textAlign={'center'} mt='5' mb='3'>EcoScribes' News</Heading>

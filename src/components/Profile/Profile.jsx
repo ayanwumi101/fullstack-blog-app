@@ -48,6 +48,7 @@ const Profile = () => {
   return (
     <>
         {userProfile ? <Box maxW={'350px'} p='3' margin={'auto'} mt='4'>
+            <Heading size='lg' textAlign={'center'}>Your Profile</Heading>
             <Box textAlign={'center'} mb='9'>
               <Avatar size='xl' src={avatar}>
                 <AvatarBadge bg='green.500' boxSize='7' />

@@ -40,9 +40,7 @@ const Card = ({post}) => {
                 <Image src={newImage} h='250px' w='100%' height={'200px'} borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
                 <Box p='3'>
                     <Heading as='h3' size={'md'} textAlign='center'>{post_title}</Heading>
-                    <Text mt='3' mb='3' textAlign={'justify'}>
-                        {post_content.substring(0,120) + ' ......'}
-                    </Text>
+                    <Box dangerouslySetInnerHTML={{ __html: post_content.substring(0, 300) + ' ......' }} mt='3' mb='3' textAlign={'justify'} p='3'></Box>   
                     <Flex justifyContent={'space-between'} alignItems='center' mb='4'>
                         <Text fontWeight={'semibold'}>By: {author_name}</Text>
                         <Text fontWeight={'semibold'}>{post_category} <ExternalLinkIcon /> </Text>

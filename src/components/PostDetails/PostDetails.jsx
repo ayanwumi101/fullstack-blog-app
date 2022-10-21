@@ -54,8 +54,6 @@ const PostDetails = () => {
 
   }, [post]);
 
-  console.log(post);
-
   return (
     <VStack>
       {post ? 
@@ -67,7 +65,7 @@ const PostDetails = () => {
           <Text>Author: <strong>{post.author_name && post.author_name}</strong></Text>
           <Text>Category: <ExternalLinkIcon /> <strong>{post.post_category}</strong></Text>
           <Text> Date Posted: <strong>{post.date}</strong></Text>
-          <Text p='5' textAlign={'justify'} lineHeight='tall'>{post.post_content}</Text>
+          <Box p='5' textAlign={'justify'} lineHeight='tall' dangerouslySetInnerHTML={{ __html: post.post_content}}></Box>
           <Link to='/home'><Button colorScheme={'teal'} size='sm' mb='5'> <ArrowBackIcon mr='1' />Go back</Button></Link>
       </> : 
           <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='70px' />}

@@ -5,6 +5,7 @@ import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, getDocs, deleteDoc, doc, onSnapshot, updateDoc} from 'firebase/firestore'
 import {ref, getDownloadURL, listAll, getStorage} from 'firebase/storage'
 import {EditIcon, DeleteIcon} from '@chakra-ui/icons'
+import {useNavigate} from 'react-router-dom'
 import './modal.css'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -21,6 +22,7 @@ const Posts = () => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [postImage, setPostImage] = useState('');
+  const navigate = useNavigate();
   
   //initialize firestore
   const db = getFirestore();
@@ -60,15 +62,6 @@ const Posts = () => {
       })
       console.log(posts);
     })
-    // onSnapshot(colref, (snapshot) => {
-    //   let item = [];
-    //   snapshot.docs.map((doc) => {
-    //     item.push({ ...doc.data(), id: doc.id });
-    //     setLoading(false)
-    //     return setPosts(item);
-    //   })
-    //   console.log(posts);
-    // });
     }, [])
 
 
@@ -142,6 +135,7 @@ const Posts = () => {
       setDate('');
       setContent('');
       setShowModal(false);
+      navigate('/home');
     })
   }
 

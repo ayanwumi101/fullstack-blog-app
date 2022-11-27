@@ -1,50 +1,22 @@
 import React, {ReactNode, useState, useEffect} from 'react'
-import {
-    Flex,
-    Box, 
-    Avatar, 
-    HStack, 
-    IconButton, 
-    Button, 
-    Menu, 
-    MenuButton, 
-    MenuList, 
-    MenuItem, 
-    MenuDivider, 
-    useDisclosure, 
-    useColorModeValue, 
-    Stack, 
-    Heading, 
-    AvatarBadge,Text, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,} from '@chakra-ui/react'
 import {Link} from 'react-router-dom'
-import {HamburgerIcon, CloseIcon, AddIcon, CheckCircleIcon, ExternalLinkIcon, DragHandleIcon} from '@chakra-ui/icons'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
 import {signOut, getAuth} from 'firebase/auth'
 import {getStorage, getDownloadURL, ref} from 'firebase/storage'
 import {getFirestore, query, where, getDocs, collection, } from 'firebase/firestore'
+import { Transition } from "@headlessui/react";
 
 
 
 const Navbar = () => {
-
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const [currentUser, setCurrentUser] = useState([]);
   const [userName, setUserName] = useState();
   const [photoUrl, setPhotoUrl] = useState('')
-  const toast = useToast();
   const location = useLocation();
   const storage = getStorage();
   const auth = getAuth();
   const navigate = useNavigate();
-
-
-  const Links = ['Sports', 'Tech', 'Education', 'Politics', 'About', 'Team', 'Contact'];
-  const NavLink = ({children}, {children: ReactNode}) => (
-      <Link px={2} py={1} rounded={'md'} _hover={{textDecoration: 'none', border: 'none', outline: 'none', bg: useColorModeValue('grey.200', 'grey.700')}} to={'/'+ children} onClick={onClose}>
-          {children}
-      </Link>
-  )
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -66,10 +38,6 @@ const Navbar = () => {
         };
 
         if(user){
-            const imageRef = ref(storage, user.uid);
-                getDownloadURL(imageRef).then((url) => {
-                    setPhotoUrl(url);
-                });
             getUsername();
         }
         
@@ -81,12 +49,6 @@ const Navbar = () => {
   const handleLogout = () => {
       signOut(auth).then(() => {
         console.log('user logged out');
-          toast({
-                  title: 'Logout Successful', 
-                  description: 'You have successfully logged out',
-                  status: 'success', duration: '5000',
-                  isClosable: 'true', 
-                  position: 'top-right'});
         navigate('/login');
       }).catch((err) => {
         console.log(err.message);
@@ -96,60 +58,28 @@ const Navbar = () => {
 
   return (
     <>
-        {location.pathname !== '/login' && location.pathname !== '/signup' && (<Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-            <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                <IconButton size={'md'} icon={isOpen ? <CloseIcon /> : <HamburgerIcon size='lg' />} aria-label={'open-menu'} display={{md: 'none'}} onClick={isOpen ? onClose : onOpen} />
+          {location.pathname !== '/signup' && location.pathname !== '/login' && (
+              <div>
+                  <nav className="bg-indigo-600">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                          <div className="flex items-center justify-between h-16">
+                              <div>
+                                  <Link to='/home'><h3 className='text-xl font-bold text-white'>Blogify</h3></Link>
+                              </div>
 
-                <HStack spacing={10}>
-                    <Link to='/home' colorScheme={'teal'} _hover={{color: 'teal'}}>
-                        <Flex alignItems={'center'}>
-                            <Heading as='h4' size={'lg'}>Eco</Heading>
-                            <Heading as='h4' size='lg' color={'whatsapp.700'}>Scribes</Heading>
-                        </Flex>
-                    </Link>
-                    <HStack as={'nav'} spacing={4} display={{base: 'none', md: 'flex'}}>
-                        {Links.map((link) => (<Link to={'/'+link}><NavLink key={link} onClick={onClose}>{link}</NavLink></Link>))}
-                    </HStack>
-                </HStack>
+                              <div className='text-white lg:block sm:hidden'>
+                                  <p>Logged in as: <strong>{userName ? userName[0].user_name : ''}</strong></p>
+                              </div>
 
-                <Flex alignItems={'center'}>
-
-                    <Menu>
-                       {currentUser && <>  
-                       <Text mr='2' fontWeight={'bold'} textTransform='capitalize' display={{base: 'none', md: 'block', lg: 'block'}}>{userName ? userName[0].user_name : ''}</Text>
-                            <MenuButton as={'button'} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} border='none' outline='none'>
-                                <Avatar src={photoUrl} size={'sm'} >
-                                    <AvatarBadge bg='green.500' boxSize='1.25em' />
-                                </Avatar>
-                            </MenuButton>
-
-                            <MenuList zIndex={'overlay'}>
-                                    { currentUser.email === "admin@gmail.com" && 
-                                    <>
-                                      <Link to='/create_post'>
-                                        <MenuItem variant={'solid'} >
-                                        <AddIcon mr='2' color={'whatsapp.700'} /> Create Post
-                                        </MenuItem>
-                                      </Link>
-                                      <MenuDivider />
-                                    <Link to='/posts'>
-                                        <MenuItem>
-                                        <DragHandleIcon mr='2' color={'whatsapp.700'} />Posts
-                                        </MenuItem>
-                                    </Link>
-                                    </>}
-                                  <MenuDivider />
-                                <Link to='/profile'><MenuItem><CheckCircleIcon mr='2' color={'whatsapp.700'} /> Profile</MenuItem></Link>
-                                <MenuDivider />
-                                <MenuItem onClick={handleLogout}><ExternalLinkIcon mr='2' color={'whatsapp.700'} />Logout</MenuItem>
-                            </MenuList>
-                        </>}
-                    </Menu>
-                </Flex>
-            </Flex>
-
-            {isOpen ? (<Box pb={4} display={{md: 'none'}}><Stack as={'nav'} spacing={4}>{Links.map((link) => (<NavLink key={link}>{link}</NavLink>))}</Stack></Box>) : null}
-        </Box>)}
+                              <div className='text-white border-white rounded-sm'>
+                                  <Link to='create_post'><button className='bg-indigo-300 px-3 py-1 rounded mr-5'>+ New post</button></Link>
+                                  <button onClick={handleLogout} className='bg-indigo-300 px-3 py-1 rounded'>Logout</button>
+                              </div>
+                          </div>
+                      </div>
+                  </nav>
+              </div>
+          )}
     </>
   )
 }

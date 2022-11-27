@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Heading, FormControl, Input, FormLabel, Button, Select, useToast, Container, Spinner } from '@chakra-ui/react'
 import { FaImage } from 'react-icons/fa'
 import { app } from '../../../firebaseConfig'
 import { getFirestore, collection, addDoc, serverTimestamp} from 'firebase/firestore'
@@ -8,11 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import '../Posts/modal.css'
+// import '../Posts/modal.css'
 
 
 const CreatePost = () => {
-  const toast = useToast();
+
   const [title, setTitle] = useState('');
   const [authorName, setAuthorName] = useState('');
   const [date, setDate] = useState('');
@@ -50,7 +49,7 @@ const CreatePost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (title && authorName && date && category && content && image) {
+    if (title && authorName && date && content && image) {
       setLoading(true);
       addDoc(colref, {
         author_name: authorName,
@@ -62,13 +61,6 @@ const CreatePost = () => {
         createdAt: serverTimestamp(),
       })
         .then(() => {
-          toast({
-            title: 'Post Published',
-            description: 'Your post has been published successfully',
-            status: 'success', duration: '5000',
-            isClosable: 'true',
-            position: 'top-right'
-          });
           setAuthorName('')
           setCategory('')
           setContent('')
@@ -83,59 +75,48 @@ const CreatePost = () => {
       });
 
     } else {
-      toast({
-        title: 'Error: Empty fields',
-        description: 'please fill the fields correctly',
-        status: 'error', duration: '2000',
-        variant: 'left-accent',
-        position: 'top'
-      });
+      console.log('error');
     }
 
   }
 
   return (
-    <Container>
-      <Box maxW={'500px'} margin='auto' mt='50px' mb='50px'>
-        <Heading as='h3' size={'lg'} textAlign='center' mb='5'>Create New Post</Heading>
+    <div className='max-w-[400px] mx-auto mt-5 mb-5'>
+        <h3 className='text-center text-xl font-bold'>Create New Post</h3>
+        <div>
+          <form action="">
+            <div className='w-full mb-5 mt-5'>
+              <label htmlFor="">Post Title</label>
+            <input type="text" className='px-3 py-1 text-sm w-full border-2 rounded border-black' value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Post Title' />
+            </div>
 
-        <FormControl isRequired>
+            <div className='w-full mb-5 mt-5'>
+              <label htmlFor="upload">Upload Image</label>
+              <input type="file" id='upload' className=' w-full' onChange={(e) => setImage(e.target.files[0])} />
+              <p>{image && image.name}</p>
+            </div>
 
-          <FormLabel>Post Title</FormLabel>
-          <Input type='text' placeholder='Title of the post' mb='5' value={title} onChange={(e) => setTitle(e.target.value)} />
+            <div className='w-full mb-5 mt-5'>
+              <label htmlFor="">Author's Name</label>
+              <input type="text" value={authorName} onChange={(e) => setAuthorName(e.target.value)} className='px-3 py-1 text-sm w-full border-2 rounded border-black' placeholder='Authors name' />
+            </div>
 
-          <FormLabel>Upload Post Image</FormLabel>
-          <FormLabel htmlFor='upload' className='uploads'>
-            <Box className='span'>
-              <FaImage className='icon' />
-              <span>Upload Image</span>
-            </Box>
-            <Input type='file' onChange={(e) => setImage(e.target.files[0])} display='none' id='upload' />
-          </FormLabel>
-          <Box mb='5' textAlign={'center'}>{image ? image.name : ''}</Box>
+            <div className='w-full mb-5 mt-5'>
+              <label htmlFor="">Date</label>
+              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className='px-3 py-1 text-sm w-full border-2 rounded border-black' />
+            </div>
+           
 
-          <FormLabel>Author Name</FormLabel>
-          <Input type='text' mb='5' value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
+            <div className='w-full mb-4'>
+              <label htmlFor="">Post Content</label>
+              <ReactQuill theme='snow' modules={modules} dangerouslySetInnerHTML={{ __html: content }} onChange={setContent} />
+            </div>
 
-          <FormLabel>Date</FormLabel>
-          <Input type='date' mb='5' value={date} onChange={(e) => setDate(e.target.value)} />
+          <button className='bg-indigo-500 rounded w-full py-1 px-2 text-white' type='submit' onClick={handleSubmit}>Publish Post</button>
 
-          <FormLabel>Post Category</FormLabel>
-          <Select type='date' mb='5' placeholder='Select post category' value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value='Sports'>Sports</option>
-            <option value='Tech'>Tech</option>
-            <option value='Education'>Education</option>
-            <option value='Entertainment'>Entertainment</option>
-            <option value='Politics'>Politics</option>
-          </Select>
-
-          <FormLabel>Post Content</FormLabel>
-          <ReactQuill theme='snow' modules={modules} dangerouslySetInnerHTML={{__html: content}} onChange={setContent} />
-        </FormControl>
-
-        <Button w='100%' mt='5' type='submit' colorScheme={'linkedin'} size='sm' onClick={handleSubmit}>{loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='md' /> : 'Publish'}</Button>
-      </Box>
-    </Container>
+          </form>
+        </div>
+    </div>
   )
 }
 

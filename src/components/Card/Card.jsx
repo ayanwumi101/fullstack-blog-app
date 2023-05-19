@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react'
+import {Box, Text, Heading, Button, HStack, Flex, Image, SkeletonCircle, SkeletonText} from '@chakra-ui/react'
+import bimbs from '../../assets/bimbs.jpg';
+import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {Link} from 'react-router-dom'
 import { ref, getStorage, getDownloadURL, listAll } from 'firebase/storage'
 import {query, collection, where, getFirestore, onSnapshot} from 'firebase/firestore'
@@ -31,20 +34,43 @@ const Card = ({post}) => {
 
 
   return (
-      <div className='mt-5 w-64'>
-        <div className='bg-gray-300 rounded-lg shadow-lg h-fit pb-3'>
-          <div className='w-64'>
-            <img src={newImage} alt="" className='w-full h-52 rounded' />
-          </div>
-          <div className="content p-2">
-            <h3 className='text-xl font-bold text-center'>{post_title}</h3>
-            <div className='text-justify text-sm mb-2' dangerouslySetInnerHTML={{ __html: post_content.substring(0, 80) + ' ......' }}></div>
-            <p className='text-sm font-medium'>By: {author_name}</p> 
-          </div>
-          <Link to={`/posts/${id}`} className='bg-indigo-500 ml-2 text-sm px-3 py-1 rounded text-white'><button>Read more..</button></Link>
-        </div>
-    </div>
+    <>
+        <Flex flexWrap={'wrap'} justifyContent='space-around' alignItems='flex-start' margin='auto' mt='6' mb='2'>
+            <Box dropShadow={'md'} w='285px' h='auto' boxShadow='md' bg={'gray.100'} borderRadius={'md'} mb='10'>
+                <Image src={newImage} h='250px' w='100%' height={'200px'} borderTopLeftRadius={'md'} borderTopRightRadius={'md'} />
+                <Box p='3'>
+                    <Heading as='h3' size={'md'} textAlign='center' textTransform={'capitalize'}>{post_title}</Heading>
+                    <Box dangerouslySetInnerHTML={{ __html: post_content.substring(0, 80) + ' ......' }} mt='2' mb='2' textAlign={'justify'} p='1' fontSize={'sm'}></Box>   
+                    <Flex justifyContent={'space-between'} alignItems='center' mb='4'>
+                        <Text fontWeight={'semibold'}>{author_name}</Text>
+                        <Text fontWeight={'semibold'}>{post_category} <ExternalLinkIcon /> </Text>
+                    </Flex>
+                    <Link to={`/posts/${id}`}><Button size={'sm'} w='100%' textAlign={'center'} colorScheme='teal'>Read more</Button></Link>
+                </Box>
+            </Box>
+        </Flex>
+    </>
   )
 }
 
 export default Card
+
+
+export const Skeleton = () => {
+  return (
+      <Flex direction='row' maxW='1000px' margin='auto' justifyContent='space-between' flexWrap='wrap' mt='50px'>
+        <Box padding='6' boxShadow='lg' bg='white' w='300px' height='auto' mb='4'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' spacing='4' noOfLines={4} />
+        </Box>
+         <Box padding='6' boxShadow='lg' bg='white' w='300px' height='auto' mb='4'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' spacing='4' noOfLines={4} />
+        </Box>
+         <Box padding='6' boxShadow='lg' bg='white' w='300px' height='auto' mb='4'>
+          <SkeletonCircle size='10' />
+          <SkeletonText mt='4' spacing='4' noOfLines={4} />
+        </Box>
+      </Flex>
+  )
+}

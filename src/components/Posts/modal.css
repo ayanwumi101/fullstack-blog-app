@@ -1,0 +1,133 @@
+button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+/* Add a color to the cancel button */
+.cancelbtn {
+    background-color: #ccc;
+    color: black;
+}
+
+/* Add a color to the delete button */
+.deletebtn {
+    background-color: #f44336;
+}
+
+/* Add padding and center-align text to the container */
+.container {
+    padding: 16px;
+    /* text-align: center; */
+}
+
+/* The Modal (background) */
+.modal{
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.5);
+    padding-top: 50px;
+    margin: auto;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 3% auto 5% auto;
+    /* 5% from the top, 15% from the bottom and centered */
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+}
+
+/* The Modal Close Button (x) */
+.close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+    color: #f44336;
+    cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.uploads{
+    width: 100%;
+    height: 100px;
+    border: 2px dashed lightgrey;
+    display: flex;
+    border-radius: 5px;
+}
+
+.span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 8px;
+}
+
+.icon{
+    font-size: 25px;
+}
+
+.post_images{
+    width: 100% ;
+    height: 650px;
+}
+
+.social-icons{
+    font-size: 25px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 700px) {
+    .cancelbtn,
+    .deletebtn {
+        width: 100%;
+    }
+
+    .uploads{
+        height: 80px;
+    }
+
+    .span{
+        margin-top: 25px;
+    }
+    .post_images{
+        width: 100%;
+        height: 100%;
+    }
+}

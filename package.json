@@ -9,13 +9,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
+    "@chakra-ui/react": "^2.6.1",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.4",
     "firebase": "^9.9.4",
+    "framer-motion": "^10.12.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.3.0",
+    "swiper": "^9.3.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

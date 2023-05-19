@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react'
+import {Box, VStack, Text, Button, Image, Heading, Container, Spinner} from '@chakra-ui/react'
+import {ExternalLinkIcon, ArrowBackIcon} from '@chakra-ui/icons'
 import {useParams, Link} from 'react-router-dom'
 import {app} from '../../../firebaseConfig'
 import {getFirestore, collection, getDocs,} from 'firebase/firestore'
+import test from '../../assets/CODE.png'
 import {getStorage, ref, getDownloadURL, listAll} from 'firebase/storage'
-// import '../Posts/modal.css'
+import '../Posts/modal.css'
 
 
 const PostDetails = () => {
@@ -52,16 +55,21 @@ const PostDetails = () => {
   }, [post]);
 
   return (
-    <div className='mb-5'>
-      <div><img src={newImage ? newImage : 'Loading'} alt="" className='w-full h-[500px]' /></div>
-      <div className='mt-5'>
-        <h2 className='text-center font-bold text-xl'>{post && post.post_title}</h2>
-        <p className='text-center text-sm'>Author: <strong>{post && post.author_name}</strong></p>
-        <p className='text-center text-sm'>Date Posted: <strong>{post && post.date}</strong></p>
-        <div className='p-8' dangerouslySetInnerHTML={{ __html: post && post.post_content }}></div>
-      </div>
-      <Link to='/home' className='ml-8 bg-gray-600 py-1 px-2 rounded text-white'><button>Go back</button></Link>
-    </div>
+    <VStack>
+      {post ? 
+      <>
+          <Box>
+            {loading ? <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='50px' /> : <Image src={newImage} className='post_images' mb='5' />}
+          </Box>
+          <Heading size={'lg'} textAlign='center' mt='5' textDecoration={'underline'}>{post.post_title}</Heading>
+          <Text>Author: <strong>{post.author_name && post.author_name}</strong></Text>
+          <Text>Category: <ExternalLinkIcon /> <strong>{post.post_category}</strong></Text>
+          <Text> Date Posted: <strong>{post.date}</strong></Text>
+          <Box p='5' textAlign={'justify'} lineHeight='tall' dangerouslySetInnerHTML={{ __html: post.post_content}}></Box>
+          <Link to='/home'><Button colorScheme={'teal'} size='sm' mb='5'> <ArrowBackIcon mr='1' />Go back</Button></Link>
+      </> : 
+          <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='lg' mt='70px' />}
+    </VStack>
   )
 }
 
